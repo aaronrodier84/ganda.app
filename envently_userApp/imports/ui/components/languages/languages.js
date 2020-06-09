@@ -88,6 +88,18 @@ Template.languageSelect.events({
             action: `${Meteor.settings.public.userAppActions.languageSelected}`, language: `${TAPi18n.languages_names[language][0]}`
         });
 
+     var usage_log = {
+       action: `${Meteor.settings.public.userAppActions.languageSelected}`,
+       language: `${TAPi18n.languages_names[language][0]}`
+     };
+     Meteor.call('UsageLog.insert', usage_log, (error, result) => {
+       if (error) {
+         console.log('error usage_log', error);
+         return;
+       }
+       console.log('success usage_log', result);
+     });
+
       //T9n.setLanguage(language);
       Meteor.setTimeout(()=>{
         $(".select-dropdown").click(function (){

@@ -20,7 +20,7 @@ if(Meteor.isClient){
 
       // console.log(" Dynamic collection js Runs when server starts");
 
-      var collectionList = ['admin_settings','cache_dev','categories','clients','custom_location','enquiry','event_dev','images','links','location_data','location_dev','location_coords','location_status','menu_item_dev','routeLocations','usersdata','advertisement','atdw_data'];
+      var collectionList = ['admin_settings','cache_dev','categories','clients','custom_location','enquiry','event_dev','images','links','location_data','location_dev','location_coords','location_status','menu_item_dev','routeLocations', 'usage_log', 'usersdata','advertisement','atdw_data'];
 
 
       
@@ -58,7 +58,7 @@ if(Meteor.isClient){
 if(Meteor.isServer) {
   Subdomain.find().fetch().forEach(function(dd,ii){
 
-    var collectionList = ['admin_settings','cache_dev','categories','clients','custom_location','enquiry','event_dev','images','links','location_data','location_dev','location_coords','location_status','menu_item_dev','routeLocations','usersdata','advertisement','atdw_data'];
+    var collectionList = ['admin_settings','cache_dev','categories','clients','custom_location','enquiry','event_dev','images','links','location_data','location_dev','location_coords','location_status','menu_item_dev','routeLocations', 'usage_log', 'usersdata','advertisement','atdw_data'];
 
     collectionList.forEach((d,i)=>{
       if(!dynamicCollections[dd.name+"_"+d]){

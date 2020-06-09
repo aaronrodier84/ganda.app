@@ -66,6 +66,20 @@ Template.client.onCreated(function clientOnCreated() {
 Template.client.onRendered(function clientOnRendered() {
   let subDomain = document.location.hostname.split('.');
   Logger.log({action: `${Meteor.settings.public.userAppActions.appLoaded}`, subDomain: `${subDomain[0]}`});
+
+  var usage_log = {
+    action: `${Meteor.settings.public.userAppActions.appLoaded}`,
+    subDomain: `${subDomain[0]}`,
+  };
+
+  Meteor.call('UsageLog.insert', usage_log, (error, result) => {
+    if (error) {
+      console.log('error usage_log', error);
+      return;
+    }
+    console.log('success usage_log', result);
+  });
+
   $('.modal').modal();
   this.autorun(() => {
     let dynamicCss = Session.get('siteSettings');

@@ -56,6 +56,9 @@ import '../../api/advertisement/server/publications.js';
 import '../../api/atdw_data/methods.js';
 import '../../api/atdw_data/server/publications.js';
 
+import '../../api/usage_log/methods.js';
+import '../../api/usage_log/server/publications.js';
+
 /*import '../../api/subdomainUsers/subdomainUsers.js';
 import '../../api/subdomainUsers/methods.js';*/
 

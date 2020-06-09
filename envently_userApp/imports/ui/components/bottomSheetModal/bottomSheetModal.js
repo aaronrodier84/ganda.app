@@ -1,10 +1,12 @@
 import './bottomSheetModal.html';
-import { AdminSettings } from '/imports/api/admin_settings/admin_settings.js';
-const { MenuItemDev } = require('/imports/api/menu_item_dev/menu_item_dev.js');
-import { dynamicCollections } from '/imports/startup/both/dynamic_collections.js';
+import {AdminSettings} from '/imports/api/admin_settings/admin_settings.js';
+
+const {MenuItemDev} = require('/imports/api/menu_item_dev/menu_item_dev.js');
+import {dynamicCollections} from '/imports/startup/both/dynamic_collections.js';
 //import { getSubdomain } from '/imports/startup/both/global_function.js';
-import { getSubdomain, getCookie, getSubMenuList } from '/imports/startup/both/global_function.js';
-import { Random } from 'meteor/random';
+import {getSubdomain, getCookie, getSubMenuList} from '/imports/startup/both/global_function.js';
+import {Random} from 'meteor/random';
+
 const moment = require('moment');
 
 /*let subMenuData = [{
@@ -23,7 +25,7 @@ Template.bottomSheetModal.onCreated(function bottomSheetModalOnCreated() {
 
   // console.log("bottom sheet created=======>");
 
-  const { ReactiveVar } = require('meteor/reactive-var');
+  const {ReactiveVar} = require('meteor/reactive-var');
   this.clients = new ReactiveVar(false);
   this.menus = new ReactiveVar(false);
   this.currentEvents = new ReactiveVar(false);
@@ -31,7 +33,7 @@ Template.bottomSheetModal.onCreated(function bottomSheetModalOnCreated() {
   this.toDate = new ReactiveVar(null);
   this.itemId = new ReactiveVar(null);
   this.markerLength = new ReactiveVar(undefined);
-  Session.set('eventTypeMarkers',false);
+  Session.set('eventTypeMarkers', false);
   this.autorun(() => {
     let menuHandle = Meteor.subscribe('menu_item_dev.all', getSubdomain(getCookie("selectedSDForSA")));
     let menuName = Session.get('selectedMenuName');
@@ -42,9 +44,9 @@ Template.bottomSheetModal.onCreated(function bottomSheetModalOnCreated() {
     if (Session.get("isEventMenuSelected")) {
       let siteSetting = {};
       if (getSubdomain(getCookie("selectedSDForSA")) && dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings']) {
-        siteSetting = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].findOne({ subDomain: getCookie("selectedSDForSA") });
+        siteSetting = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].findOne({subDomain: getCookie("selectedSDForSA")});
       } else {
-        siteSetting = AdminSettings.findOne({ subDomain: getCookie("selectedSDForSA") });
+        siteSetting = AdminSettings.findOne({subDomain: getCookie("selectedSDForSA")});
       }
       if (siteSetting && siteSetting.rssFeed && siteSetting.rssFeedLive) {
         try {
@@ -145,9 +147,9 @@ Template.bottomSheetModal.helpers({
   bottomSheetLocationList() {
     let siteSetting = {};
     if (getSubdomain(getCookie("selectedSDForSA")) && dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings']) {
-      siteSetting = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].findOne({ subDomain: getCookie("selectedSDForSA") });
+      siteSetting = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].findOne({subDomain: getCookie("selectedSDForSA")});
     } else {
-      siteSetting = AdminSettings.findOne({ subDomain: getCookie("selectedSDForSA") });
+      siteSetting = AdminSettings.findOne({subDomain: getCookie("selectedSDForSA")});
     }
     let colors = {
       "modalBackgroundColor": "#323232 !important",
@@ -183,9 +185,9 @@ Template.bottomSheetModal.helpers({
   bottomSheetSubMenu() {
     let siteSetting = {};
     if (getSubdomain(getCookie("selectedSDForSA")) && dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings']) {
-      siteSetting = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].findOne({ subDomain: getCookie("selectedSDForSA") });
+      siteSetting = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].findOne({subDomain: getCookie("selectedSDForSA")});
     } else {
-      siteSetting = AdminSettings.findOne({ subDomain: getCookie("selectedSDForSA") });
+      siteSetting = AdminSettings.findOne({subDomain: getCookie("selectedSDForSA")});
     }
     let colors = {
       "headerBackgroundColor": "#939597 !important",
@@ -225,16 +227,20 @@ Template.bottomSheetModal.helpers({
       var selectedMenuData = {};
       if (getSubdomain(getCookie("selectedSDForSA"))) {
 
-        selectedMenuData = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_menu_item_dev'].findOne({ "_id": selectedMenuId, "publishDetails": { $exists: true } });
-      }
-      else {
-        selectedMenuData = MenuItemDev.findOne({ "_id": selectedMenuId, "publishDetails": { $exists: true } });
+        selectedMenuData = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_menu_item_dev'].findOne({
+          "_id": selectedMenuId,
+          "publishDetails": {$exists: true}
+        });
+      } else {
+        selectedMenuData = MenuItemDev.findOne({"_id": selectedMenuId, "publishDetails": {$exists: true}});
       }
       var items = selectedMenuData.items || [];
       items = _.sortBy(items, 'customIndex');
       selectedMenuData['items'] = items;
       Template.instance().menus.set(selectedMenuData);
-      if (selectedMenuData.items.length == 1 && (!Session.get("isEventMenuSelected"))) { Session.set("currentMenu", null); }
+      if (selectedMenuData.items.length == 1 && (!Session.get("isEventMenuSelected"))) {
+        Session.set("currentMenu", null);
+      }
       return selectedMenuData;
     } else {
 
@@ -284,9 +290,9 @@ Template.bottomSheetModal.helpers({
 
     let siteSetting = {};
     if (getSubdomain(getCookie("selectedSDForSA")) && dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings']) {
-      siteSetting = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].findOne({ subDomain: getCookie("selectedSDForSA") });
+      siteSetting = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].findOne({subDomain: getCookie("selectedSDForSA")});
     } else {
-      siteSetting = AdminSettings.findOne({ subDomain: getCookie("selectedSDForSA") });
+      siteSetting = AdminSettings.findOne({subDomain: getCookie("selectedSDForSA")});
     }
     let branding = siteSetting && siteSetting.branding ? siteSetting.branding : {};
     if (branding.sidelogo)
@@ -306,9 +312,9 @@ Template.bottomSheetModal.helpers({
   eventsDate() {
     let adminSettings = {};
     if (getSubdomain(getCookie("selectedSDForSA")) && dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings']) {
-      adminSettings = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].findOne({ subDomain: getCookie("selectedSDForSA") });
+      adminSettings = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].findOne({subDomain: getCookie("selectedSDForSA")});
     } else {
-      adminSettings = AdminSettings.findOne({ subDomain: getCookie("selectedSDForSA") });
+      adminSettings = AdminSettings.findOne({subDomain: getCookie("selectedSDForSA")});
     }
     let dates = {}, days = adminSettings.atdw.numberOfDaysForEvents || 10;
     dates.from = new Date().toISOString().substring(0, 10);
@@ -345,7 +351,7 @@ Template.bottomSheetModal.helpers({
   },
 
   isPhone() {
-    let adminSettings = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].find({ subDomain: getCookie("selectedSDForSA") }).fetch();
+    let adminSettings = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].find({subDomain: getCookie("selectedSDForSA")}).fetch();
     let settings = adminSettings[0];
     if (settings && settings.displaySettings) {
       // console.log('settings.displaySettings.callButtonOnLocationListModal', settings.displaySettings.callButtonOnLocationListModal)
@@ -375,7 +381,7 @@ Template.bottomSheetModal.events({
   'click .locate'(event, inst) {
     // console.log("menu is selected");
     event.preventDefault();
-    Session.set('eventTypeMarkers',false);
+    Session.set('eventTypeMarkers', false);
     if (Session.get("isEventMenuSelected")) {
       if (!$('#eventTo').val() && !$('#eventTo').val()) {
         Materialize.toast('Please fill Start & End dates!!!', 2000, 'error-popup-small');
@@ -506,9 +512,9 @@ Template.bottomSheetModal.events({
       Session.set('showMap', true);
     }
     $('.fixed-action-btn').closeFAB();
-    Session.set('eventTypeMarkers',true);
+    Session.set('eventTypeMarkers', true);
     let title = event.currentTarget.dataset.title;
-    let item = _.findWhere(inst.currentEvents.get(), { title: title });
+    let item = _.findWhere(inst.currentEvents.get(), {title: title});
     let newItemObj = {};
 
     /* Code to set base menu color for marker BG */
@@ -569,10 +575,26 @@ Template.bottomSheetModal.events({
 
     // console.log("subdomain ===> " , subdomain);
 
-    Logger.log({ action: `${Meteor.settings.public.userAppActions.subMenuItemSelected}`, subdomain: `${subdomain[0]}`, context: `${itemName}` });
+    Logger.log({
+      action: `${Meteor.settings.public.userAppActions.subMenuItemSelected}`,
+      subdomain: `${subdomain[0]}`,
+      context: `${itemName}`
+    });
+
+    var usage_log = {
+      action: `${Meteor.settings.public.userAppActions.subMenuItemSelected}`,
+      subdomain: `${subdomain[0]}`,
+      context: `${itemName}`
+    };
+    Meteor.call('UsageLog.insert', usage_log, (error, result) => {
+      if (error) {
+        console.log('error usage_log', error);
+        return;
+      }
+      console.log('success usage_log', result);
+    });
 
     // console.log("Logging ====> ${Meteor.settings.public.userAppActions.subMenuItemSelected}");
-
 
 
     // form a new object similiar to the one required in markers array
@@ -607,24 +629,44 @@ Template.bottomSheetModal.events({
     let enddate = $('#eventFrom').val();
   },
   'click .mapboxgl-canvas'(event) {
-    Template.mapbox.__eventMaps[0]["click .mapboxgl-canvas"].call({ templateInstance: function () { } }, event);
+    Template.mapbox.__eventMaps[0]["click .mapboxgl-canvas"].call({
+      templateInstance: function () {
+      }
+    }, event);
   },
   'click .marker'(event) {
-    Template.mapbox.__eventMaps[0]["click .marker"].call({ templateInstance: function () { } }, event);
+    Template.mapbox.__eventMaps[0]["click .marker"].call({
+      templateInstance: function () {
+      }
+    }, event);
   },
   'click .marker-edit-icon'(event, inst) {
-    Template.mapbox.__eventMaps[0]["click .marker-edit-icon"].call({ templateInstance: function () { } }, event);
+    Template.mapbox.__eventMaps[0]["click .marker-edit-icon"].call({
+      templateInstance: function () {
+      }
+    }, event);
   },
   'click .more-info'(event, inst) {
-    Template.mapbox.__eventMaps[0]["click .more-info"].call({ templateInstance: function () { return Template.mapbox } }, event);
+    Template.mapbox.__eventMaps[0]["click .more-info"].call({
+      templateInstance: function () {
+        return Template.mapbox
+      }
+    }, event);
   },
   'click .directions'(event, inst) {
-    Template.mapbox.__eventMaps[0]["click .directions"].call({ templateInstance: function () { return Template.mapbox } }, event, inst);
+    Template.mapbox.__eventMaps[0]["click .directions"].call({
+      templateInstance: function () {
+        return Template.mapbox
+      }
+    }, event, inst);
     Session.set("noExternalDataLoad", true);
     $('#bottomSheetModalId').modal('close');
   },
   'click .call'(event, inst) {
-    Template.mapbox.__eventMaps[0]["click .call"].call({ templateInstance: function () { } }, event);
+    Template.mapbox.__eventMaps[0]["click .call"].call({
+      templateInstance: function () {
+      }
+    }, event);
   }
 });
 
@@ -632,9 +674,9 @@ function fetchRssFeedEvents() {
   try {
     let siteSetting = {};
     if (getSubdomain(getCookie("selectedSDForSA")) && dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings']) {
-      siteSetting = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].findOne({ subDomain: getCookie("selectedSDForSA") });
+      siteSetting = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].findOne({subDomain: getCookie("selectedSDForSA")});
     } else {
-      siteSetting = AdminSettings.findOne({ subDomain: getCookie("selectedSDForSA") });
+      siteSetting = AdminSettings.findOne({subDomain: getCookie("selectedSDForSA")});
     }
     console.log(`======THIS IS SITE SETTINGS ${siteSetting} =======>`);
 
@@ -651,7 +693,6 @@ function fetchRssFeedEvents() {
     // console.log(":: current events finally called");
   }
 }
-
 
 
 function findData(item, inst, adminSettings, menu, itemUrl) {
@@ -675,12 +716,24 @@ function findData(item, inst, adminSettings, menu, itemUrl) {
       context: `${itemName}`
     }
   );
+  var usage_log = {
+    action: `${Meteor.settings.public.userAppActions.subMenuItemSelected}`,
+    subdomain: `${subdomain}`,
+    context: `${itemName}`
+  };
+  Meteor.call('UsageLog.insert', usage_log, (error, result) => {
+    if (error) {
+      console.log('error usage_log', error);
+      return;
+    }
+    console.log('success usage_log', result);
+  });
   try {
     let siteSetting = {};
     if (getSubdomain(getCookie("selectedSDForSA")) && dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings']) {
-      siteSetting = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].findOne({ subDomain: getCookie("selectedSDForSA") });
+      siteSetting = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].findOne({subDomain: getCookie("selectedSDForSA")});
     } else {
-      siteSetting = AdminSettings.findOne({ subDomain: getCookie("selectedSDForSA") });
+      siteSetting = AdminSettings.findOne({subDomain: getCookie("selectedSDForSA")});
     }
     let suburb = siteSetting && siteSetting.suburb ? siteSetting.suburb : '';
     var subdomain = document.location.hostname.split('.');
@@ -734,9 +787,9 @@ export function atdwRequest() {
   if (Session.get('isATDWRequest')) {
     let siteSetting = {};
     if (getSubdomain(getCookie("selectedSDForSA")) && dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings']) {
-      siteSetting = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].findOne({ subDomain: getCookie("selectedSDForSA") });
+      siteSetting = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].findOne({subDomain: getCookie("selectedSDForSA")});
     } else {
-      siteSetting = AdminSettings.findOne({ subDomain: getCookie("selectedSDForSA") });
+      siteSetting = AdminSettings.findOne({subDomain: getCookie("selectedSDForSA")});
     }
     let markersArray = Session.get('categsArray');
     let pageNumber = Session.get('pageNumber');
@@ -803,7 +856,8 @@ export function atdwRequest() {
 
     }).fail(function () {
       showAlert('danger', 'Fail to load data Try Again');
-    });;
+    });
+    ;
     //Session.set('showLoadingSpinner', false);
     if (!Session.get('showMap')) {
       Session.set('showMap', true);

@@ -45,7 +45,7 @@ Template.enquiryModal.helpers({
                 "submitButtonBackgroundColor" : `${siteSetting.colors.enquiryModal.submitButtonBackgroundColor} !important` || "#fff !important",
                 "submitButtonTextColor" : `${siteSetting.colors.enquiryModal.submitButtonTextColor} !important` || "#373737 !important",
                 "footerBackgroundColor" : `${siteSetting.colors.enquiryModal.footerBackgroundColor} !important` || "#fff !important",
-                "inputBorderColor" : `1px solid ${siteSetting.colors.enquiryModal.inputBorderColor} !important` || "1px solid #fff !important",
+             //   "inputBorderColor" : `1px solid ${siteSetting.colors.enquiryModal.inputBorderColor} !important` || "1px solid #fff !important",
                 "inputBorderColor" : `0 1px 0 0 ${siteSetting.colors.enquiryModal.inputBorderColor} !important` || "0 1px 0 0 #fff !important"
             };
         }

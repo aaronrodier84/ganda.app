@@ -1,9 +1,10 @@
 import './markerDetails.html';
 import '../../pages/businessLocation/businesslocation.js';
-import { Usersdata } from '/imports/api/usersdata/usersdata.js';
-import { dynamicCollections } from '/imports/startup/both/dynamic_collections.js';
-import { getSubdomain, getCookie } from '/imports/startup/both/global_function.js';
-import { AdminSettings } from '/imports/api/admin_settings/admin_settings.js';
+import {Usersdata} from '/imports/api/usersdata/usersdata.js';
+import {dynamicCollections} from '/imports/startup/both/dynamic_collections.js';
+import {getSubdomain, getCookie} from '/imports/startup/both/global_function.js';
+import {AdminSettings} from '/imports/api/admin_settings/admin_settings.js';
+
 const moment = require('moment');
 
 Template.markerDetails.onCreated(function () {
@@ -49,9 +50,9 @@ Template.markerDetails.helpers({
   bottomLocationDetails() {
     let siteSetting = {};
     if (getSubdomain(getCookie("selectedSDForSA")) && dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings']) {
-      siteSetting = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].findOne({ subDomain: getCookie("selectedSDForSA") });
+      siteSetting = dynamicCollections[getSubdomain(getCookie("selectedSDForSA")) + '_admin_settings'].findOne({subDomain: getCookie("selectedSDForSA")});
     } else {
-      siteSetting = AdminSettings.findOne({ subDomain: getCookie("selectedSDForSA") });
+      siteSetting = AdminSettings.findOne({subDomain: getCookie("selectedSDForSA")});
     }
     let colors = {
       "modalBackgroundColor": "#484848",
@@ -101,8 +102,7 @@ Template.markerDetails.helpers({
       isSavedData = null;
     if (getSubdomain()) {
       savedLocationList = dynamicCollections[getSubdomain() + '_usersdata'].find({}).fetch()
-    }
-    else {
+    } else {
       savedLocationList = Usersdata.find({}).fetch()
     }
     if (data) {
@@ -367,11 +367,33 @@ Template.markerDetails.events({
     Logger.log({
       action: `${Meteor.settings.public.userAppActions.externalLinkPressed}`, context: `${link}`
     });
+    var usage_log = {
+      action: `${Meteor.settings.public.userAppActions.externalLinkPressed}`,
+      context: `${link}`
+    };
+    Meteor.call('UsageLog.insert', usage_log, (error, result) => {
+      if (error) {
+        console.log('error usage_log', error);
+        return;
+      }
+      console.log('success usage_log', result);
+    });
   },
   'click .website-link'(event) {
     const link = event.target.name;
     Logger.log({
       action: `${Meteor.settings.public.userAppActions.externalLinkPressed}`, context: `${link}`
+    });
+    var usage_log = {
+      action: `${Meteor.settings.public.userAppActions.externalLinkPressed}`,
+      context: `${link}`
+    };
+    Meteor.call('UsageLog.insert', usage_log, (error, result) => {
+      if (error) {
+        console.log('error usage_log', error);
+        return;
+      }
+      console.log('success usage_log', result);
     });
   },
   'click .close-modal'(event, inst) {
@@ -391,6 +413,16 @@ Template.markerDetails.events({
     $('.button-collapse').sideNav('hide');
     Logger.log({
       action: `${Meteor.settings.public.userAppActions.directionsButtonPressed}`
+    });
+    var usage_log = {
+      action: `${Meteor.settings.public.userAppActions.directionsButtonPressed}`
+    };
+    Meteor.call('UsageLog.insert', usage_log, (error, result) => {
+      if (error) {
+        console.log('error usage_log', error);
+        return;
+      }
+      console.log('success usage_log', result);
     });
     if (inst.data ? inst.data : null) {
       let markerDetails = inst.data;
