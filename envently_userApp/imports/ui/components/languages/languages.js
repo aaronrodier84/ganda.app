@@ -84,9 +84,9 @@ Template.languageSelect.events({
       // console.log("loaded languages ====> " , TAPi18n.languages_names[language][0]);
 
 
-      Logger.log({
-            action: `${Meteor.settings.public.userAppActions.languageSelected}`, language: `${TAPi18n.languages_names[language][0]}`
-        });
+      // Logger.log({
+      //       action: `${Meteor.settings.public.userAppActions.languageSelected}`, language: `${TAPi18n.languages_names[language][0]}`
+      //   });
 
      var usage_log = {
        action: `${Meteor.settings.public.userAppActions.languageSelected}`,

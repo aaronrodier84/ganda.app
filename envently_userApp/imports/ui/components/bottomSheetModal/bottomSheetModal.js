@@ -575,11 +575,11 @@ Template.bottomSheetModal.events({
 
     // console.log("subdomain ===> " , subdomain);
 
-    Logger.log({
-      action: `${Meteor.settings.public.userAppActions.subMenuItemSelected}`,
-      subdomain: `${subdomain[0]}`,
-      context: `${itemName}`
-    });
+    // Logger.log({
+    //   action: `${Meteor.settings.public.userAppActions.subMenuItemSelected}`,
+    //   subdomain: `${subdomain[0]}`,
+    //   context: `${itemName}`
+    // });
 
     var usage_log = {
       action: `${Meteor.settings.public.userAppActions.subMenuItemSelected}`,
@@ -709,13 +709,13 @@ function findData(item, inst, adminSettings, menu, itemUrl) {
   Session.set('menuItemSelected', itemName);
   inst.data.selectedMenuItemName.set(itemName);
   var subdomain = document.location.hostname.split('.');
-  Logger.log(
-    {
-      action: `${Meteor.settings.public.userAppActions.subMenuItemSelected}`,
-      subdomain: `${subdomain}`,
-      context: `${itemName}`
-    }
-  );
+  // Logger.log(
+  //   {
+  //     action: `${Meteor.settings.public.userAppActions.subMenuItemSelected}`,
+  //     subdomain: `${subdomain}`,
+  //     context: `${itemName}`
+  //   }
+  // );
   var usage_log = {
     action: `${Meteor.settings.public.userAppActions.subMenuItemSelected}`,
     subdomain: `${subdomain}`,

@@ -65,7 +65,7 @@ Template.client.onCreated(function clientOnCreated() {
 
 Template.client.onRendered(function clientOnRendered() {
   let subDomain = document.location.hostname.split('.');
-  Logger.log({action: `${Meteor.settings.public.userAppActions.appLoaded}`, subDomain: `${subDomain[0]}`});
+  // Logger.log({action: `${Meteor.settings.public.userAppActions.appLoaded}`, subDomain: `${subDomain[0]}`});
 
   var usage_log = {
     action: `${Meteor.settings.public.userAppActions.appLoaded}`,

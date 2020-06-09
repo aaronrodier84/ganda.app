@@ -48,10 +48,10 @@ Template.mapbox.onCreated(function () {
     latLng: [0, 0],
     profile: 'driving-traffic'
   });
-  Logger.log({
-    action: `${Meteor.settings.public.userAppActions.mapRender}`,
-    subdomain: `${subDomain}`
-  });
+  // Logger.log({
+  //   action: `${Meteor.settings.public.userAppActions.mapRender}`,
+  //   subdomain: `${subDomain}`
+  // });
   var usage_log = {
     action: `${Meteor.settings.public.userAppActions.mapRender}`,
     subdomain: `${subDomain}`
@@ -160,9 +160,9 @@ Template.mapbox.onRendered(function () {
   setInterval(() => map.resize(), 2000);
   Meteor.setTimeout(() => {
     let subDomain = getSubdomain(getCookie("selectedSDForSA"));
-    Logger.log({
-      action: `${Meteor.settings.public.userAppActions.mapRendered}`, subDomain: `${subDomain}`
-    });
+    // Logger.log({
+    //   action: `${Meteor.settings.public.userAppActions.mapRendered}`, subDomain: `${subDomain}`
+    // });
 
     var usage_log = {
       action: `${Meteor.settings.public.userAppActions.mapRendered}`,
@@ -652,11 +652,11 @@ Template.mapbox.events({
 
       var promise = new Promise(function (res, rej) {
 
-        Logger.log({
-          action: `${Meteor.settings.public.userAppActions.listMenuSelected}`,
-          context: `${markerDetails[0].name}`,
-          language: `${lang}`
-        });
+        // Logger.log({
+        //   action: `${Meteor.settings.public.userAppActions.listMenuSelected}`,
+        //   context: `${markerDetails[0].name}`,
+        //   language: `${lang}`
+        // });
         var usage_log = {
           action: `${Meteor.settings.public.userAppActions.listMenuSelected}`,
           context: `${markerDetails[0].name}`,
@@ -675,9 +675,9 @@ Template.mapbox.events({
       }).then(function (result) {
 
         // console.log("under then");
-        Logger.log({
-          action: `${Meteor.settings.public.userAppActions.markerPressed}`, context: `${markerDetails[0].name}`
-        });
+        // Logger.log({
+        //   action: `${Meteor.settings.public.userAppActions.markerPressed}`, context: `${markerDetails[0].name}`
+        // });
         var usage_log = {
           action: `${Meteor.settings.public.userAppActions.markerPressed}`,
           context: `${markerDetails[0].name}`
@@ -732,11 +732,11 @@ Template.mapbox.events({
 
       var promise = new Promise(function (res, rej) {
 
-        Logger.log({
-          action: `${Meteor.settings.public.userAppActions.listMenuSelected}`,
-          context: `${markerDetails[0].name}`,
-          language: `${lang}`
-        });
+        // Logger.log({
+        //   action: `${Meteor.settings.public.userAppActions.listMenuSelected}`,
+        //   context: `${markerDetails[0].name}`,
+        //   language: `${lang}`
+        // });
 
         var usage_log = {
           action: `${Meteor.settings.public.userAppActions.listMenuSelected}`,
@@ -756,9 +756,9 @@ Template.mapbox.events({
 
       promise.then(function (result) {
 
-        Logger.log({
-          action: `${Meteor.settings.public.userAppActions.markerPressed}`, context: `${markerDetails[0].name}`
-        });
+        // Logger.log({
+        //   action: `${Meteor.settings.public.userAppActions.markerPressed}`, context: `${markerDetails[0].name}`
+        // });
 
         var usage_log = {
           action: `${Meteor.settings.public.userAppActions.markerPressed}`,
@@ -816,11 +816,11 @@ Template.mapbox.events({
 
       var promise = new Promise(function (res, rej) {
 
-        Logger.log({
-          action: `${Meteor.settings.public.userAppActions.listMenuSelected}`,
-          context: `${markerDetails[0].name}`,
-          language: `${lang}`
-        });
+        // Logger.log({
+        //   action: `${Meteor.settings.public.userAppActions.listMenuSelected}`,
+        //   context: `${markerDetails[0].name}`,
+        //   language: `${lang}`
+        // });
 
         var usage_log = {
           action: `${Meteor.settings.public.userAppActions.listMenuSelected}`,
@@ -840,9 +840,9 @@ Template.mapbox.events({
 
       promise.then(function (result) {
 
-        Logger.log({
-          action: `${Meteor.settings.public.userAppActions.detailsButtonPressed}`, context: `${markerDetails[0].name}`
-        });
+        // Logger.log({
+        //   action: `${Meteor.settings.public.userAppActions.detailsButtonPressed}`, context: `${markerDetails[0].name}`
+        // });
 
         var usage_log = {
           action: `${Meteor.settings.public.userAppActions.detailsButtonPressed}`,
@@ -925,11 +925,11 @@ Template.mapbox.events({
 
       var promise = new Promise(function (res, rej) {
 
-        Logger.log({
-          action: `${Meteor.settings.public.userAppActions.listMenuSelected}`,
-          context: `${markerDetails[0].name}`,
-          language: `${lang}`
-        });
+        // Logger.log({
+        //   action: `${Meteor.settings.public.userAppActions.listMenuSelected}`,
+        //   context: `${markerDetails[0].name}`,
+        //   language: `${lang}`
+        // });
 
         var usage_log = {
           action: `${Meteor.settings.public.userAppActions.listMenuSelected}`,
@@ -949,10 +949,10 @@ Template.mapbox.events({
 
       promise.then(function (result) {
 
-        Logger.log({
-          action: `${Meteor.settings.public.userAppActions.directionsButtonPressed}`,
-          context: `${markerDetails[0].name}`
-        });
+        // Logger.log({
+        //   action: `${Meteor.settings.public.userAppActions.directionsButtonPressed}`,
+        //   context: `${markerDetails[0].name}`
+        // });
 
         var usage_log = {
           action: `${Meteor.settings.public.userAppActions.directionsButtonPressed}`,

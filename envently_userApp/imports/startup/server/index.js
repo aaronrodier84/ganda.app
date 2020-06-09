@@ -13,7 +13,7 @@ Meteor.startup(function () {
 
 
   let subDomain = Meteor.absoluteUrl().split("/")[2].split(".")[0];
-  Logger.log({action: `${Meteor.settings.public.userAppActions.appStart}`, subDomain: `${subDomain}`});
+  // Logger.log({action: `${Meteor.settings.public.userAppActions.appStart}`, subDomain: `${subDomain}`});
 
   var usage_log = {
     action: `${Meteor.settings.public.userAppActions.appStart}`,

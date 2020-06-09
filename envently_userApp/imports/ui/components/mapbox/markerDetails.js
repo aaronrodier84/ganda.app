@@ -364,9 +364,9 @@ Template.markerDetails.events({
   },*/
   'click .details-link'(event) {
     const link = event.target.name;
-    Logger.log({
-      action: `${Meteor.settings.public.userAppActions.externalLinkPressed}`, context: `${link}`
-    });
+    // Logger.log({
+    //   action: `${Meteor.settings.public.userAppActions.externalLinkPressed}`, context: `${link}`
+    // });
     var usage_log = {
       action: `${Meteor.settings.public.userAppActions.externalLinkPressed}`,
       context: `${link}`
@@ -381,9 +381,9 @@ Template.markerDetails.events({
   },
   'click .website-link'(event) {
     const link = event.target.name;
-    Logger.log({
-      action: `${Meteor.settings.public.userAppActions.externalLinkPressed}`, context: `${link}`
-    });
+    // Logger.log({
+    //   action: `${Meteor.settings.public.userAppActions.externalLinkPressed}`, context: `${link}`
+    // });
     var usage_log = {
       action: `${Meteor.settings.public.userAppActions.externalLinkPressed}`,
       context: `${link}`
@@ -411,9 +411,9 @@ Template.markerDetails.events({
     markerDetailModal.removeAttr('style').css("display", "none");
     $('.modal-overlay:last').remove();
     $('.button-collapse').sideNav('hide');
-    Logger.log({
-      action: `${Meteor.settings.public.userAppActions.directionsButtonPressed}`
-    });
+    // Logger.log({
+    //   action: `${Meteor.settings.public.userAppActions.directionsButtonPressed}`
+    // });
     var usage_log = {
       action: `${Meteor.settings.public.userAppActions.directionsButtonPressed}`
     };

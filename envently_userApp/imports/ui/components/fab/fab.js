@@ -221,12 +221,12 @@ Template.fab.events({
 
       // console.log(`yes this is ${Meteor.settings.public.userAppActions.mainMenuItemSelected} ${subdomain[0]} ${modalName}`);
 
-      Logger.log(
-        {
-          action: `${Meteor.settings.public.userAppActions.mainMenuItemSelected}`,
-          subDomain: `${subdomain[0]}`,
-          context: `${modalName}`
-        });
+      // Logger.log(
+      //   {
+      //     action: `${Meteor.settings.public.userAppActions.mainMenuItemSelected}`,
+      //     subDomain: `${subdomain[0]}`,
+      //     context: `${modalName}`
+      //   });
       var usage_log = {
         action: `${Meteor.settings.public.userAppActions.mainMenuItemSelected}`,
         subDomain: `${subdomain[0]}`,
@@ -426,11 +426,11 @@ Template.fab.events({
       $('#overlay-box, #mainMenuList').css('display', 'none');
     var subdomain = document.location.hostname.split('.');
 
-    Logger.log({
-        action: `${Meteor.settings.public.userAppActions.mainMenuOpened}`,
-        subdomain: `${subdomain[0]}`
-      },
-    );
+    // Logger.log({
+    //     action: `${Meteor.settings.public.userAppActions.mainMenuOpened}`,
+    //     subdomain: `${subdomain[0]}`
+    //   },
+    // );
 
     var usage_log = {
         action: `${Meteor.settings.public.userAppActions.mainMenuOpened}`,
@@ -546,11 +546,11 @@ function showMapBoxModalDirectly(item, inst) {
   Session.set('item', item);
   inst.data.selectedMenuItemName.set(itemName);
   var subdomain = document.location.hostname.split('.');
-  Logger.log({
-    action: `${Meteor.settings.public.userAppActions.subMenuItemSelected}`,
-    subDomain: `${subdomain[0]}`,
-    context: `${itemName}`
-  });
+  // Logger.log({
+  //   action: `${Meteor.settings.public.userAppActions.subMenuItemSelected}`,
+  //   subDomain: `${subdomain[0]}`,
+  //   context: `${itemName}`
+  // });
 
   var usage_log = {
     action: `${Meteor.settings.public.userAppActions.subMenuItemSelected}`,

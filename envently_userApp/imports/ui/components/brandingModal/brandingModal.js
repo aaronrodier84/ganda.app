@@ -126,7 +126,7 @@ Template.brandingModal.helpers({
 Template.brandingModal.events({
   'click .branding-link'(event) {
     const link = event.target.name;
-    Logger.log({action: `${Meteor.settings.public.userAppActions.externalLinkPressed}`, context: `${link}`});
+    // Logger.log({action: `${Meteor.settings.public.userAppActions.externalLinkPressed}`, context: `${link}`});
 
     var usage_log = {
       action: `${Meteor.settings.public.userAppActions.externalLinkPressed}`,
