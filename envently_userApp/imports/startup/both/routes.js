@@ -72,7 +72,7 @@ FlowRouter.route('/', {
         });
       }
       else {
-        Session.set('currentClient', 'envent.ly');
+        Session.set('currentClient', 'ganda.app');
         BlazeLayout.render('appBody', {
           main: 'appHome',
         });

@@ -6,7 +6,8 @@ BlazeLayout.setRoot('body');
 
 Meteor.setTimeout(() => {
     if (!Session.get("currentClient")) {
-        document.title = "Envent.ly"
+      // document.title = "Envent.ly"
+      document.title = "ganda.app"
     } else {
         document.title = Session.get("currentClient");
     }
