@@ -16,6 +16,8 @@
     "body-parser": "^1.19.0",
     "buffer": "^5.0.6",
     "call-number": "^1.0.1",
+    "datatables.net": "^1.10.21",
+    "datatables.net-bs": "^1.10.21",
     "fibers": "^1.0.15",
     "https": "^1.0.0",
     "leaflet": "^1.0.3",
