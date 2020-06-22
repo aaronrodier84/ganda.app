@@ -7,6 +7,8 @@ import {Subdomain} from '/imports/api/subdomain/subdomain.js';
 import {UsageLog} from '/imports/api/usage_log/usage_log.js';
 import {LocationDev} from '/imports/api/location_dev/location_dev.js';
 import {ReactiveVar} from 'meteor/reactive-var';
+import Chart from 'chart.js/dist/Chart';
+
 import './report.html';
 import '../user/user.js';
 
@@ -39,6 +41,8 @@ Template.report.onCreated(function () {
   this.currentUsageLogs = new ReactiveVar(false);
   this.dataTable = new ReactiveVar(false);
   this.dataTableHeaders = new ReactiveVar(false);
+  this.reportChartData = new ReactiveVar(false);
+  this.reportChartInstance = new ReactiveVar(false);
 
   var self = this;
 
@@ -123,9 +127,6 @@ Template.report.onCreated(function () {
 
 Template.report.onRendered(function () {
   var self = this;
-  $('.datepicker').on('mousedown', function (event) {
-    event.preventDefault();
-  });
   Meteor.setTimeout(() => {
     // Materialize components init
     $('.datepicker').pickadate({
@@ -142,8 +143,12 @@ Template.report.onRendered(function () {
       },
     });
   }, 500);
-  this.autorun(function () {
-    // $('#report-sub-category').parent().css('display', 'none');
+  $('.datepicker').on('mousedown', function (event) {
+    event.preventDefault();
+  });
+
+
+  this.autorun(() => {
 
   });
 
@@ -202,16 +207,8 @@ Template.report.helpers({
     return Template.instance().reportFlag.get();
   },
 
-  getUserSession(flag = '') {
-    return flag === 'user_session';
-  },
-
-  getReportData() {
-    return Template.instance().reportData.get();
-  },
-
-  getCurrentUsageLogs() {
-    return Template.instance().currentUsageLogs.get();
+  getReportDataFlag() {
+    return Template.instance().reportFlag.get() && Template.instance().reportFlag.get() !== 'user_session';
   },
 
   getDataTableHeaders() {
@@ -246,8 +243,24 @@ Template.report.events({
       if (instance.dataTable.get()) {
         instance.dataTable.get().destroy();
       }
+      if (instance.reportChartInstance.get()) {
+        instance.reportChartInstance.get().destroy();
+      }
       var tableData = [];
       instance.dataTableHeaders.set(['Content', 'Count']);
+
+      var reportChartData = {
+        labels: [],
+        datasets: [
+          {
+            label: '',
+            backgroundColor: [],
+            borderColor: [],
+            borderWidth: 1,
+            data: []
+          }
+        ]
+      };
 
       switch ($('#report-type').val()) {
         case 'main_category':
@@ -262,7 +275,15 @@ Template.report.events({
             temp.push(instance.currentUsageLogs.get()[i].context);
             temp.push(instance.currentUsageLogs.get()[i].count);
             tableData.push(temp);
+            if (i < 10) {
+              reportChartData.labels.push(instance.currentUsageLogs.get()[i].context);
+              var colorAttribute = 'rgba(' + randomColorAttrbute() + ',' + randomColorAttrbute() + ',' + randomColorAttrbute() + ',';
+              reportChartData.datasets[0].backgroundColor.push(colorAttribute + '0.2)');
+              reportChartData.datasets[0].borderColor.push(colorAttribute + '1)');
+              reportChartData.datasets[0].data.push(instance.currentUsageLogs.get()[i].count);
+            }
           }
+          reportChartData.datasets[0].label = "Main Category";
           break;
         case 'sub_category':
           instance.reportFlag.set('sub_category');
@@ -275,8 +296,15 @@ Template.report.events({
             temp.push(instance.currentUsageLogs.get()[i].context);
             temp.push(instance.currentUsageLogs.get()[i].count);
             tableData.push(temp);
+            if (i < 10) {
+              reportChartData.labels.push(instance.currentUsageLogs.get()[i].context);
+              var colorAttribute = 'rgba(' + randomColorAttrbute() + ',' + randomColorAttrbute() + ',' + randomColorAttrbute() + ',';
+              reportChartData.datasets[0].backgroundColor.push(colorAttribute + '0.2)');
+              reportChartData.datasets[0].borderColor.push(colorAttribute + '1)');
+              reportChartData.datasets[0].data.push(instance.currentUsageLogs.get()[i].count);
+            }
           }
-
+          reportChartData.datasets[0].label = "Sub Category";
           break;
         case 'destination':
           instance.reportFlag.set('destination');
@@ -325,8 +353,15 @@ Template.report.events({
             temp.push(instance.currentUsageLogs.get()[i].context);
             temp.push(instance.currentUsageLogs.get()[i].count);
             tableData.push(temp);
+            if (i < 10) {
+              reportChartData.labels.push(instance.currentUsageLogs.get()[i].context);
+              var colorAttribute = 'rgba(' + randomColorAttrbute() + ',' + randomColorAttrbute() + ',' + randomColorAttrbute() + ',';
+              reportChartData.datasets[0].backgroundColor.push(colorAttribute + '0.2)');
+              reportChartData.datasets[0].borderColor.push(colorAttribute + '1)');
+              reportChartData.datasets[0].data.push(instance.currentUsageLogs.get()[i].count);
+            }
           }
-
+          reportChartData.datasets[0].label = "Destination";
           break;
         case 'user_session':
           instance.reportFlag.set('user_session');
@@ -349,6 +384,7 @@ Template.report.events({
           instance.reportFlag.set(false);
           break;
       }
+      instance.reportChartData.set(reportChartData);
       Meteor.setTimeout(() => {
 
         instance.dataTable.set($('.report-table').DataTable(
@@ -356,11 +392,46 @@ Template.report.events({
             data: tableData
           }
         ));
+
+
+        const data = {
+          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+          datasets: [
+            {
+              label: 'My First dataset',
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+              ],
+              borderColor: [
+                'rgba(255,99,132,1)',
+              ],
+              borderWidth: 1,
+              data: [randomColorAttrbute(), randomColorAttrbute(), randomColorAttrbute(), randomColorAttrbute(), randomColorAttrbute(), randomColorAttrbute(), randomColorAttrbute()],
+            }
+          ],
+        };
+
+        console.log('reportChartData', reportChartData);
+        console.log('data', data);
+
+        instance.reportChartInstance.set(new Chart('report-chart', {
+          type: 'horizontalBar',
+          data: reportChartData,
+          options: {
+            maintainAspectRatio: false,
+            scales: {
+              xAxes: [{
+                ticks: {
+                  beginAtZero:true
+                }
+              }]
+            }
+          },
+        }));
+
         instance.isPageLoad.set(false);
 
       }, 500);
-
-
     }
 
 
@@ -457,4 +528,8 @@ function formatDate(date) {
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function randomColorAttrbute() {
+  return Math.floor((Math.random() * 255) + 1);
 }
