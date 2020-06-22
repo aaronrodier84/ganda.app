@@ -1,0 +1,7 @@
+table.dataTable thead .sorting_asc:after {
+	content: "\25B2";
+}
+
+table.dataTable thead .sorting_desc:after {
+	content: '\25BC';
+}

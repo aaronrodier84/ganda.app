@@ -32,7 +32,7 @@ if(Meteor.isClient){
   if(handle.ready())
   {
     Subdomain.find().fetch().forEach(function(dd,ii){
-      var collectionList = ['admin_settings','cache_dev','categories','clients','custom_location','enquiry','event_dev','images','links','location_data','location_dev','location_coords','location_status','menu_item_dev','routeLocations','usersdata','advertisement','atdw_data'];
+      var collectionList = ['admin_settings','cache_dev','categories','clients','custom_location','enquiry','event_dev','images','links','location_data','location_dev','location_coords','location_status','menu_item_dev','routeLocations','usersdata', 'usage_log', 'advertisement','atdw_data'];
       collectionList.forEach((d,i)=>{
         // if(!Mongo.Collection.get(dd.name+"_"+d) || !dynamicCollections[dd.name+"_"+d])
         if(!dynamicCollections[dd.name+"_"+d])
@@ -58,7 +58,7 @@ if(Meteor.isClient){
 }
 if(Meteor.isServer) {
   Subdomain.find().fetch().forEach(function(dd,ii){
-    var collectionList = ['admin_settings','cache_dev','categories','clients','custom_location','enquiry','event_dev','images','links','location_data','location_dev','location_coords','location_status','menu_item_dev','routeLocations','usersdata','advertisement','atdw_data'];
+    var collectionList = ['admin_settings','cache_dev','categories','clients','custom_location','enquiry','event_dev','images','links','location_data','location_dev','location_coords','location_status','menu_item_dev','routeLocations','usersdata', 'usage_log', 'advertisement','atdw_data'];
     collectionList.forEach((d,i)=>{
       if(!dynamicCollections[dd.name+"_"+d]){
         dynamicCollections[dd.name+"_"+d] = new Mongo.Collection(dd.name+'_'+d);
@@ -125,7 +125,7 @@ if(Meteor.isServer) {
 // });
 
 export function create_dynamic_collection(subdomainName){
-    var collectionList = ['admin_settings','cache_dev','categories','clients','custom_location','enquiry','event_dev','images','links','location_data','location_dev','location_coords','location_status','menu_item_dev','routeLocations','usersdata','advertisement'];
+    var collectionList = ['admin_settings','cache_dev','categories','clients','custom_location','enquiry','event_dev','images','links','location_data','location_dev','location_coords','location_status','menu_item_dev','routeLocations','usersdata', 'usage_log', 'advertisement'];
     collectionList.forEach((d,i)=>{
       if(!dynamicCollections[subdomainName+"_"+d]){
         dynamicCollections[subdomainName+"_"+d] = new Mongo.Collection(subdomainName+'_'+d);

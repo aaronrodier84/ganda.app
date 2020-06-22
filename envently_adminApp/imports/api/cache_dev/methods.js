@@ -3,6 +3,8 @@ import { check, Match } from 'meteor/check';
 import { CacheDev } from './cache_dev.js';
 import { AdminSettings } from '/imports/api/admin_settings/admin_settings.js';
 import { getSubdomain} from '/imports/startup/both/global_function.js';
+import { dynamicCollections } from '/imports/startup/both/dynamic_collections.js';
+
 Meteor.methods({
     'CacheDev.getLocationInfo' (searchObject) {
         check(searchObject, Object);

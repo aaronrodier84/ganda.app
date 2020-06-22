@@ -10,7 +10,7 @@ import('aws-sdk').then((AWS) => {
     /*	let adminSetting = AdminSettings.findOne({userId: this.userId, awsBucket:Meteor.settings.awsBucket});
     	if(!adminSetting){*/
     // not exist
-    //check in list buckets -- if not exists then create new and insert in adminSettings collection 
+    //check in list buckets -- if not exists then create new and insert in adminSettings collection
     var params = {};
     AWSs3.listBuckets(params, Meteor.bindEnvironment((err, data) => {
         if (err) console.log("err...", err);
