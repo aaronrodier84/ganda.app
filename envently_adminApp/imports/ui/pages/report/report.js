@@ -1,29 +1,32 @@
-
 import {getSubdomain, setCookie, getCookie, deleteAllCookies} from '/imports/startup/both/global_function.js';
 import {dynamicCollections} from '/imports/startup/both/dynamic_collections.js';
 import {
   MenuItemDev
 } from '/imports/api/menu_item_dev/menu_item_dev.js';
-import { Subdomain } from '/imports/api/subdomain/subdomain.js';
-import { UsageLog } from '/imports/api/usage_log/usage_log.js';
-import { LocationDev } from '/imports/api/location_dev/location_dev.js';
-import { ReactiveVar } from 'meteor/reactive-var';
+import {Subdomain} from '/imports/api/subdomain/subdomain.js';
+import {UsageLog} from '/imports/api/usage_log/usage_log.js';
+import {LocationDev} from '/imports/api/location_dev/location_dev.js';
+import {ReactiveVar} from 'meteor/reactive-var';
 import './report.html';
-import './report.css';
 import '../user/user.js';
 
+import datatables from 'datatables.net';
+import datatables_bs from 'datatables.net-bs';
+import 'datatables.net-bs/css/dataTables.bootstrap.css';
+import './report.css';
+
 Template.report.onCreated(function () {
-	this.subscribe = Meteor.subscribe('usage_log.all');
+  this.subscribe = Meteor.subscribe('usage_log.all');
   this.client = new ReactiveVar(false);
   this.menus = new ReactiveVar(false);
   // this.subdomain = new ReactiveVar(false);
-	// this.showUsers = new ReactiveVar(false);
-	// this.selectedSubdomain = new ReactiveVar(null);
-	// this.showEdit = new ReactiveVar(false);
+  // this.showUsers = new ReactiveVar(false);
+  // this.selectedSubdomain = new ReactiveVar(null);
+  // this.showEdit = new ReactiveVar(false);
   this.reportFlag = new ReactiveVar(false);
   this.reportData = new ReactiveVar(false);
-	this.isPageLoad = new ReactiveVar(false);
-	this.reportType = new ReactiveVar(false);
+  this.isPageLoad = new ReactiveVar(false);
+  this.reportType = new ReactiveVar(false);
   this.selectedDomain = new ReactiveVar(getCookie("selectedSDForSA"));
   this.subCategoryFlag = new ReactiveVar(false);
   this.subCategories = new ReactiveVar(false);
@@ -34,7 +37,13 @@ Template.report.onCreated(function () {
   this.destination = new ReactiveVar(false);
   this.allUsageLog = new ReactiveVar(false);
   this.currentUsageLogs = new ReactiveVar(false);
+  this.dataTable = new ReactiveVar(false);
+  this.dataTableHeaders = new ReactiveVar(false);
+
   var self = this;
+
+  datatables(window, $);
+  datatables_bs(window, $);
 
   this.autorun(() => {
     if (!getCookie("selectedSDForSA")) {
@@ -109,12 +118,12 @@ Template.report.onCreated(function () {
         this.allUsageLog.set(UsageLog.find({}).fetch());
       }
     }
-	});
+  });
 });
 
 Template.report.onRendered(function () {
-	var self = this;
-  $('.datepicker').on('mousedown',function(event){
+  var self = this;
+  $('.datepicker').on('mousedown', function (event) {
     event.preventDefault();
   });
   Meteor.setTimeout(() => {
@@ -133,7 +142,7 @@ Template.report.onRendered(function () {
       },
     });
   }, 500);
-	this.autorun(function () {
+  this.autorun(function () {
     // $('#report-sub-category').parent().css('display', 'none');
 
   });
@@ -141,16 +150,16 @@ Template.report.onRendered(function () {
 });
 
 Template.report.onDestroyed(function () {
-	// this.selectedReport.set(null);
+  // this.selectedReport.set(null);
 });
 
 Template.report.helpers({
-	report () {
-		return UsageLog.find().fetch();
-	},
-	checkSubdomainCount () {
+  report() {
+    return UsageLog.find().fetch();
+  },
+  checkSubdomainCount() {
 
-	},
+  },
 
   selectedDomain() {
     return {selectedDomain: Template.instance().selectedDomain.get() || ''};
@@ -168,10 +177,10 @@ Template.report.helpers({
     return menuName[currentLang];
   },
 
-	pageLoading () {
-		const instance = Template.instance();
-		return instance.isPageLoad.get() || false;
-	},
+  pageLoading() {
+    const instance = Template.instance();
+    return instance.isPageLoad.get() || false;
+  },
 
   getSubCategoryFlag() {
     return Template.instance().subCategoryFlag.get();
@@ -194,39 +203,27 @@ Template.report.helpers({
   },
 
   getUserSession(flag = '') {
-	  return flag === 'user_session';
+    return flag === 'user_session';
   },
 
   getReportData() {
-	  return Template.instance().reportData.get();
+    return Template.instance().reportData.get();
   },
 
   getCurrentUsageLogs() {
-	  return Template.instance().currentUsageLogs.get();
+    return Template.instance().currentUsageLogs.get();
   },
 
-  formatDate(date) {
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var ampm = hours >= 12 ? 'pm' : 'am';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0'+minutes : minutes;
-    var strTime = hours + ':' + minutes + ' ' + ampm;
-    return (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
-
-  },
-
-  capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+  getDataTableHeaders() {
+    return Template.instance().dataTableHeaders.get();
   },
 
 });
 
 Template.report.events({
-	'submit #report-generate-form' (event, inst) {
+  'submit #report-generate-form'(event, inst) {
 
-		event.preventDefault();
+    event.preventDefault();
     const instance = Template.instance();
 
     instance.currentUsageLogs.set(false);
@@ -245,19 +242,40 @@ Template.report.events({
         icon: 'fa-warning',
       });
     } else {
+      if (instance.dataTable.get()) {
+        instance.dataTable.get().destroy();
+      }
+      var tableData = [];
+      instance.dataTableHeaders.set(['Content', 'Count']);
+
       switch ($('#report-type').val()) {
         case 'main_category':
 
           instance.reportFlag.set('main_category');
-          instance.currentUsageLogs.set(removeDuplicateContext(allUsageLogs.filter(function(each) {
+          instance.currentUsageLogs.set(removeDuplicateContext(allUsageLogs.filter(function (each) {
             return (each.action === 'main menu item selected') && (new Date(each.createdAt) >= startDate) && (new Date(each.createdAt) <= endDate);
-          }), 'context').sort((a,b) => (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0)));
+          }), 'context').sort((a, b) => (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0)));
+
+          for (var i = 0; i < instance.currentUsageLogs.get().length; i++) {
+            var temp = [];
+            temp.push(instance.currentUsageLogs.get()[i].context);
+            temp.push(instance.currentUsageLogs.get()[i].count);
+            tableData.push(temp);
+          }
           break;
         case 'sub_category':
           instance.reportFlag.set('sub_category');
-          instance.currentUsageLogs.set(removeDuplicateContext(allUsageLogs.filter(function(each) {
+          instance.currentUsageLogs.set(removeDuplicateContext(allUsageLogs.filter(function (each) {
             return (each.action === 'sub menu item selected') && (new Date(each.createdAt) >= startDate) && (new Date(each.createdAt) <= endDate);
-          }), 'context').sort((a,b) => (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0)));
+          }), 'context').sort((a, b) => (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0)));
+
+          for (var i = 0; i < instance.currentUsageLogs.get().length; i++) {
+            var temp = [];
+            temp.push(instance.currentUsageLogs.get()[i].context);
+            temp.push(instance.currentUsageLogs.get()[i].count);
+            tableData.push(temp);
+          }
+
           break;
         case 'destination':
           instance.reportFlag.set('destination');
@@ -266,7 +284,7 @@ Template.report.events({
             for (var i = 0; i < instance.menus.get().length; i++) {
               var subCats = instance.menus.get()[i].items;
               for (var j = 0; j < subCats.length; j++) {
-                var destinationResult = instance.allDestinations.get().filter(function(each) {
+                var destinationResult = instance.allDestinations.get().filter(function (each) {
                   return subCats[j].sensis_locations.includes(each.location_ref_id);
                 });
                 for (var k = 0; k < destinationResult.length; k++) {
@@ -278,7 +296,7 @@ Template.report.events({
             var curMenus = instance.menus.get().find(each => each._id === $('#report-main-category').val());
             for (var i = 0; i < curMenus.items.length; i++) {
 
-              var destinationResult = instance.allDestinations.get().filter(function(each) {
+              var destinationResult = instance.allDestinations.get().filter(function (each) {
                 return curMenus.items[i].sensis_locations.includes(each.location_ref_id)
               });
               for (var j = 0; j < destinationResult.length; j++) {
@@ -287,11 +305,11 @@ Template.report.events({
             }
           } else if ($('#report-destination').val() === 'all') {
             var subCat = instance.subCategories.get().find(each => each._id === $('#report-sub-category').val());
-            reportDestinations = instance.allDestinations.get().filter(function(each) {
+            reportDestinations = instance.allDestinations.get().filter(function (each) {
               return subCat.sensis_locations.includes(each.location_ref_id)
             });
           } else {
-            reportDestinations = instance.allDestinations.get().filter(function(each) {
+            reportDestinations = instance.allDestinations.get().filter(function (each) {
               return each._id === $('#report-destination').val();
             });
           }
@@ -299,13 +317,30 @@ Template.report.events({
           instance.currentUsageLogs.set(removeDuplicateContext(allUsageLogs.filter(function (each) {
             return (each.action === 'list menu item selected') && (new Date(each.createdAt) >= startDate) && (new Date(each.createdAt) <= endDate)
               && (reportDestinations.some(eachDestination => eachDestination.name === each.context))
-          }), 'context').sort((a,b) => (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0)));
+          }), 'context').sort((a, b) => (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0)));
+
+          for (var i = 0; i < instance.currentUsageLogs.get().length; i++) {
+            var temp = [];
+            temp.push(instance.currentUsageLogs.get()[i].context);
+            temp.push(instance.currentUsageLogs.get()[i].count);
+            tableData.push(temp);
+          }
+
           break;
         case 'user_session':
           instance.reportFlag.set('user_session');
-          instance.currentUsageLogs.set(allUsageLogs.filter(function(each) {
+          instance.dataTableHeaders.set(['Action', 'Date']);
+          instance.currentUsageLogs.set(allUsageLogs.filter(function (each) {
             return (each.action === 'app start' || each.action === 'app loaded') && (new Date(each.createdAt) >= startDate) && (new Date(each.createdAt) <= endDate);
-          }).sort((a,b) => (a.createdAt < b.createdAt) ? 1 : ((b.createdAt < a.createdAt) ? -1 : 0)));
+          }).sort((a, b) => (a.createdAt < b.createdAt) ? 1 : ((b.createdAt < a.createdAt) ? -1 : 0)));
+
+          for (var i = 0; i < instance.currentUsageLogs.get().length; i++) {
+            var temp = [];
+            temp.push(capitalizeFirstLetter(instance.currentUsageLogs.get()[i].action));
+            temp.push(formatDate(instance.currentUsageLogs.get()[i].createdAt));
+            tableData.push(temp);
+          }
+
           break;
 
         default:
@@ -313,20 +348,30 @@ Template.report.events({
           instance.reportFlag.set(false);
           break;
       }
-    }
+      Meteor.setTimeout(() => {
 
+        instance.dataTable.set($('.report-table').DataTable(
+          {
+            data: tableData
+          }
+        ));
+
+      }, 500);
+
+
+    }
 
 
     instance.isPageLoad.set(false);
 
-	},
+  },
 
   "change #report-type"(event, inst) {
     const instance = Template.instance();
     if ($('#report-type').val() === 'destination') {
       instance.destinationFlag.set(true);
       Meteor.setTimeout(() => {
-          $('#report-main-category').material_select();
+        $('#report-main-category').material_select();
       }, 500);
     } else {
       instance.destinationFlag.set(false);
@@ -336,12 +381,12 @@ Template.report.events({
   },
 
   "change #report-main-category"(event, inst) {
-	  const instance = Template.instance();
-	  if ($('#report-main-category').val() === 'all') {
-	    instance.subCategoryFlag.set(false);
+    const instance = Template.instance();
+    if ($('#report-main-category').val() === 'all') {
+      instance.subCategoryFlag.set(false);
     } else {
-	    instance.subCategoryFlag.set(true);
-      instance.subCategories.set(instance.menus.get().find(function(each) {
+      instance.subCategoryFlag.set(true);
+      instance.subCategories.set(instance.menus.get().find(function (each) {
         return each._id === $('#report-main-category').val();
       }).items);
 
@@ -359,8 +404,10 @@ Template.report.events({
       instance.destinationDetailsFlag.set(false);
     } else {
       instance.destinationDetailsFlag.set(true);
-      instance.currentDestinations.set(instance.allDestinations.get().filter(function(each) {
-        return instance.subCategories.get().find(function(eachSub){ return eachSub._id === $('#report-sub-category').val()}).sensis_locations.includes(each.location_ref_id);
+      instance.currentDestinations.set(instance.allDestinations.get().filter(function (each) {
+        return instance.subCategories.get().find(function (eachSub) {
+          return eachSub._id === $('#report-sub-category').val()
+        }).sensis_locations.includes(each.location_ref_id);
       }));
       Meteor.setTimeout(() => {
         $('#report-destination').material_select();
@@ -392,4 +439,20 @@ function removeDuplicateContext(inputArray, property) {
     }
   }
   return returnArray;
+}
+
+function formatDate(date) {
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  var strTime = hours + ':' + minutes + ' ' + ampm;
+  return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
+
+}
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
