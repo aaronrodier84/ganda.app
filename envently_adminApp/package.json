@@ -21,6 +21,7 @@
     "datatables.net-bs": "^1.10.21",
     "fibers": "^1.0.15",
     "https": "^1.0.0",
+    "json-2-csv": "^3.7.3",
     "leaflet": "^1.0.3",
     "maki": "^2.1.0",
     "mapbox": "^1.0.0-beta9",

@@ -17,6 +17,8 @@ import datatables_bs from 'datatables.net-bs';
 import 'datatables.net-bs/css/dataTables.bootstrap.css';
 import './report.css';
 
+import {json2csv} from 'json-2-csv';
+
 Template.report.onCreated(function () {
   this.subscribe = Meteor.subscribe('usage_log.all');
   this.client = new ReactiveVar(false);
@@ -43,6 +45,7 @@ Template.report.onCreated(function () {
   this.dataTableHeaders = new ReactiveVar(false);
   this.reportChartData = new ReactiveVar(false);
   this.reportChartInstance = new ReactiveVar(false);
+  this.dataTableData = new ReactiveVar(false);
 
   var self = this;
 
@@ -385,6 +388,7 @@ Template.report.events({
           break;
       }
       instance.reportChartData.set(reportChartData);
+      instance.dataTableData.set(tableData);
       Meteor.setTimeout(() => {
 
         instance.dataTable.set($('.report-table').DataTable(
@@ -393,26 +397,7 @@ Template.report.events({
           }
         ));
 
-
-        const data = {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-          datasets: [
-            {
-              label: 'My First dataset',
-              backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-              ],
-              borderColor: [
-                'rgba(255,99,132,1)',
-              ],
-              borderWidth: 1,
-              data: [randomColorAttrbute(), randomColorAttrbute(), randomColorAttrbute(), randomColorAttrbute(), randomColorAttrbute(), randomColorAttrbute(), randomColorAttrbute()],
-            }
-          ],
-        };
-
         console.log('reportChartData', reportChartData);
-        console.log('data', data);
 
         instance.reportChartInstance.set(new Chart('report-chart', {
           type: 'horizontalBar',
@@ -422,7 +407,7 @@ Template.report.events({
             scales: {
               xAxes: [{
                 ticks: {
-                  beginAtZero:true
+                  beginAtZero: true
                 }
               }]
             }
@@ -451,6 +436,39 @@ Template.report.events({
       instance.subCategoryFlag.set(false);
       instance.destinationDetailsFlag.set(false);
     }
+  },
+
+  "click #report-export"(event, inst) {
+    const instance = Template.instance();
+    console.log("usage_log", instance.dataTableData.get());
+    console.log("flag", instance.reportFlag.get());
+    var jsonInput = [];
+    if (instance.reportFlag.get !== 'user_session') {
+      for (var i = 0; i < instance.dataTableData.get().length; i++) {
+        jsonInput.push({
+          Content: instance.dataTableData.get()[i][0],
+          Count: instance.dataTableData.get()[i][1]
+        });
+      }
+    } else {
+      jsonInput.push({
+        Action: instance.dataTableData.get()[i][0],
+        Date: instance.dataTableData.get()[i][1]
+      });
+    }
+
+    json2csv(jsonInput, function (err, csvContent) {
+      if (err) throw err;
+      console.log(csvContent);
+      var encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvContent);
+      var link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "report_data.csv");
+      document.body.appendChild(link); // Required for FF
+
+      link.click();
+
+    });
   },
 
   "change #report-main-category"(event, inst) {
