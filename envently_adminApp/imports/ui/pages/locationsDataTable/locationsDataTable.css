@@ -16,7 +16,7 @@ select[name=location-datatable_length] {
 }
 
 .category {
-    margin: 10px 10px; // overflow: hidden;
+    margin: 10px 10px;
 }
 
 .category a.btn {

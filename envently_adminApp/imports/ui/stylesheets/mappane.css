@@ -9,10 +9,10 @@
   background:#000;
 }
 
-.mapboxgl-canvas {
-  // position: relative !important;
-  // width: 100% !important;
-}
+/*.mapboxgl-canvas {*/
+  /*// position: relative !important;*/
+  /*// width: 100% !important;*/
+/*}*/
 
 #markerModal {
     z-index: 2000 !important;
