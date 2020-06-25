@@ -106,7 +106,7 @@
     ```
  *** Enable ganda file. ***
  
-     ln -s /etc/nginx/sites-available /etc/nginx/site-enabled   
+     ln -s /etc/nginx/sites-available /etc/nginx/site-enabled
 
 * Install Meteor
 
@@ -338,9 +338,9 @@
     }
     ```    
 
-   *** Enable ganda file. ***
+ *** Enable ganda file. ***
 
-    ln -s /etc/nginx/sites-available /etc/nginx/site-enabled    
+    `ln -s /etc/nginx/sites-available /etc/nginx/site-enabled`
     
 * Install Meteor
 
