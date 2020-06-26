@@ -51,7 +51,7 @@ Template.subdomainUsers.helpers({
 		const subdomain = Subdomain.findOne(this.subdomainId);
 		Template.instance().selectedSubdomain.set(this.subdomainId);
 		if (!subdomain) return '';
-		return `${subdomain.name}.envent.ly`;
+		return `${subdomain.name}.ganda.app`;
 	},
 	users () {
 

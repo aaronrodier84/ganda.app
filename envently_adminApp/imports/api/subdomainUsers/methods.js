@@ -39,19 +39,19 @@ Meteor.methods({
       if(usersData.hostname === "localhost"){
           url = `http://${usersData.hostname}:${usersData.port}/user-invitation/${token}`;
       }else{
-          url = `https://admin.envent.ly/user-invitation/${token}`;
+          url = `https://admin.ganda.app/user-invitation/${token}`;
       }
       console.log(' => invite url => ',url)
       let html = `<p>Hi ${usersData.name},</p> \n\n
-      <p>This is a courtesy email from <a href='https://admin.envent.ly'>admin.envent.ly</a> to let you know that Super Admin has created an account for you.</p> \n
+      <p>This is a courtesy email from <a href='https://admin.ganda.app'>admin.ganda.app</a> to let you know that Super Admin has created an account for you.</p> \n
       <p>Click on the below link to go to the server and activate your account. </p>
       <p><a href=${url}>${url}</a></p>\n\n
       <p>Regards & Thanks,</p>
-      </p><b>EnventLy</b></p>`;
+      </p><b>Ganda</b></p>`;
       Email.send({
           to: usersData.email,
-          from: "EnventLy <hello@doqumi.com>",
-          subject: "Welcome to EnventLy",
+          from: "Ganda <hello@doqumi.com>",
+          subject: "Welcome to Ganda",
           html: html
       });
       return url;

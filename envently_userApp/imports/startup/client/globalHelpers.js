@@ -26,7 +26,7 @@ function getTitleValue(userobj){
   }else{
   	var subdomain = document.location.hostname.split('.');
   	if(subdomain[0]=='admin')
-      return 'envently admin';
+      return 'Ganda Admin';
     else return subdomain[0];
   }
 }
