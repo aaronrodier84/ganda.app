@@ -48,7 +48,7 @@ Template.report.onCreated(function () {
   this.dataTableData = new ReactiveVar(false);
 
   var self = this;
-
+  this.isPageLoad.set(true);
   datatables(window, $);
   datatables_bs(window, $);
 
@@ -94,6 +94,7 @@ Template.report.onCreated(function () {
 
       }, 500);
 
+      this.isPageLoad.set(false);
 
     }
 
@@ -125,7 +126,9 @@ Template.report.onCreated(function () {
         this.allUsageLog.set(UsageLog.find({}).fetch());
       }
     }
+
   });
+
 });
 
 Template.report.onRendered(function () {
@@ -265,128 +268,131 @@ Template.report.events({
         ]
       };
 
-      switch ($('#report-type').val()) {
-        case 'main_category':
+      if (allUsageLogs.length > 0) {
+        switch ($('#report-type').val()) {
+          case 'main_category':
 
-          instance.reportFlag.set('main_category');
-          instance.currentUsageLogs.set(removeDuplicateContext(allUsageLogs.filter(function (each) {
-            return (each.action === 'main menu item selected') && (new Date(each.createdAt) >= startDate) && (new Date(each.createdAt) <= endDate);
-          }), 'context').sort((a, b) => (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0)));
+            instance.reportFlag.set('main_category');
+            instance.currentUsageLogs.set(removeDuplicateContext(allUsageLogs.filter(function (each) {
+              return (each.action === 'main menu item selected') && (new Date(each.createdAt) >= startDate) && (new Date(each.createdAt) <= endDate);
+            }), 'context').sort((a, b) => (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0)));
 
-          for (var i = 0; i < instance.currentUsageLogs.get().length; i++) {
-            var temp = [];
-            temp.push(instance.currentUsageLogs.get()[i].context);
-            temp.push(instance.currentUsageLogs.get()[i].count);
-            tableData.push(temp);
-            if (i < 10) {
-              reportChartData.labels.push(instance.currentUsageLogs.get()[i].context);
-              var colorAttribute = 'rgba(' + randomColorAttrbute() + ',' + randomColorAttrbute() + ',' + randomColorAttrbute() + ',';
-              reportChartData.datasets[0].backgroundColor.push(colorAttribute + '0.2)');
-              reportChartData.datasets[0].borderColor.push(colorAttribute + '1)');
-              reportChartData.datasets[0].data.push(instance.currentUsageLogs.get()[i].count);
+            for (var i = 0; i < instance.currentUsageLogs.get().length; i++) {
+              var temp = [];
+              temp.push(instance.currentUsageLogs.get()[i].context);
+              temp.push(instance.currentUsageLogs.get()[i].count);
+              tableData.push(temp);
+              if (i < 10) {
+                reportChartData.labels.push(instance.currentUsageLogs.get()[i].context);
+                var colorAttribute = 'rgba(' + randomColorAttrbute() + ',' + randomColorAttrbute() + ',' + randomColorAttrbute() + ',';
+                reportChartData.datasets[0].backgroundColor.push(colorAttribute + '0.2)');
+                reportChartData.datasets[0].borderColor.push(colorAttribute + '1)');
+                reportChartData.datasets[0].data.push(instance.currentUsageLogs.get()[i].count);
+              }
             }
-          }
-          reportChartData.datasets[0].label = "Main Category";
-          break;
-        case 'sub_category':
-          instance.reportFlag.set('sub_category');
-          instance.currentUsageLogs.set(removeDuplicateContext(allUsageLogs.filter(function (each) {
-            return (each.action === 'sub menu item selected') && (new Date(each.createdAt) >= startDate) && (new Date(each.createdAt) <= endDate);
-          }), 'context').sort((a, b) => (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0)));
+            reportChartData.datasets[0].label = "Main Category";
+            break;
+          case 'sub_category':
+            instance.reportFlag.set('sub_category');
+            instance.currentUsageLogs.set(removeDuplicateContext(allUsageLogs.filter(function (each) {
+              return (each.action === 'sub menu item selected') && (new Date(each.createdAt) >= startDate) && (new Date(each.createdAt) <= endDate);
+            }), 'context').sort((a, b) => (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0)));
 
-          for (var i = 0; i < instance.currentUsageLogs.get().length; i++) {
-            var temp = [];
-            temp.push(instance.currentUsageLogs.get()[i].context);
-            temp.push(instance.currentUsageLogs.get()[i].count);
-            tableData.push(temp);
-            if (i < 10) {
-              reportChartData.labels.push(instance.currentUsageLogs.get()[i].context);
-              var colorAttribute = 'rgba(' + randomColorAttrbute() + ',' + randomColorAttrbute() + ',' + randomColorAttrbute() + ',';
-              reportChartData.datasets[0].backgroundColor.push(colorAttribute + '0.2)');
-              reportChartData.datasets[0].borderColor.push(colorAttribute + '1)');
-              reportChartData.datasets[0].data.push(instance.currentUsageLogs.get()[i].count);
+            for (var i = 0; i < instance.currentUsageLogs.get().length; i++) {
+              var temp = [];
+              temp.push(instance.currentUsageLogs.get()[i].context);
+              temp.push(instance.currentUsageLogs.get()[i].count);
+              tableData.push(temp);
+              if (i < 10) {
+                reportChartData.labels.push(instance.currentUsageLogs.get()[i].context);
+                var colorAttribute = 'rgba(' + randomColorAttrbute() + ',' + randomColorAttrbute() + ',' + randomColorAttrbute() + ',';
+                reportChartData.datasets[0].backgroundColor.push(colorAttribute + '0.2)');
+                reportChartData.datasets[0].borderColor.push(colorAttribute + '1)');
+                reportChartData.datasets[0].data.push(instance.currentUsageLogs.get()[i].count);
+              }
             }
-          }
-          reportChartData.datasets[0].label = "Sub Category";
-          break;
-        case 'destination':
-          instance.reportFlag.set('destination');
-          var reportDestinations = [];
-          if ($('#report-main-category').val() === 'all') {
-            for (var i = 0; i < instance.menus.get().length; i++) {
-              var subCats = instance.menus.get()[i].items;
-              for (var j = 0; j < subCats.length; j++) {
-                var destinationResult = instance.allDestinations.get().filter(function (each) {
-                  return subCats[j].sensis_locations.includes(each.location_ref_id);
-                });
-                for (var k = 0; k < destinationResult.length; k++) {
-                  reportDestinations.push(destinationResult[k]);
+            reportChartData.datasets[0].label = "Sub Category";
+            break;
+          case 'destination':
+            instance.reportFlag.set('destination');
+            var reportDestinations = [];
+            if ($('#report-main-category').val() === 'all') {
+              for (var i = 0; i < instance.menus.get().length; i++) {
+                var subCats = instance.menus.get()[i].items;
+                for (var j = 0; j < subCats.length; j++) {
+                  var destinationResult = instance.allDestinations.get().filter(function (each) {
+                    return subCats[j].sensis_locations.includes(each.location_ref_id);
+                  });
+                  for (var k = 0; k < destinationResult.length; k++) {
+                    reportDestinations.push(destinationResult[k]);
+                  }
                 }
               }
-            }
-          } else if ($('#report-sub-category').val() === 'all') {
-            var curMenus = instance.menus.get().find(each => each._id === $('#report-main-category').val());
-            for (var i = 0; i < curMenus.items.length; i++) {
+            } else if ($('#report-sub-category').val() === 'all') {
+              var curMenus = instance.menus.get().find(each => each._id === $('#report-main-category').val());
+              for (var i = 0; i < curMenus.items.length; i++) {
 
-              var destinationResult = instance.allDestinations.get().filter(function (each) {
-                return curMenus.items[i].sensis_locations.includes(each.location_ref_id)
+                var destinationResult = instance.allDestinations.get().filter(function (each) {
+                  return curMenus.items[i].sensis_locations.includes(each.location_ref_id)
+                });
+                for (var j = 0; j < destinationResult.length; j++) {
+                  reportDestinations.push(destinationResult[j]);
+                }
+              }
+            } else if ($('#report-destination').val() === 'all') {
+              var subCat = instance.subCategories.get().find(each => each._id === $('#report-sub-category').val());
+              reportDestinations = instance.allDestinations.get().filter(function (each) {
+                return subCat.sensis_locations.includes(each.location_ref_id)
               });
-              for (var j = 0; j < destinationResult.length; j++) {
-                reportDestinations.push(destinationResult[j]);
+            } else {
+              reportDestinations = instance.allDestinations.get().filter(function (each) {
+                return each._id === $('#report-destination').val();
+              });
+            }
+
+            instance.currentUsageLogs.set(removeDuplicateContext(allUsageLogs.filter(function (each) {
+              return (each.action === 'list menu item selected') && (new Date(each.createdAt) >= startDate) && (new Date(each.createdAt) <= endDate)
+                && (reportDestinations.some(eachDestination => eachDestination.name === each.context))
+            }), 'context').sort((a, b) => (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0)));
+
+            for (var i = 0; i < instance.currentUsageLogs.get().length; i++) {
+              var temp = [];
+              temp.push(instance.currentUsageLogs.get()[i].context);
+              temp.push(instance.currentUsageLogs.get()[i].count);
+              tableData.push(temp);
+              if (i < 10) {
+                reportChartData.labels.push(instance.currentUsageLogs.get()[i].context);
+                var colorAttribute = 'rgba(' + randomColorAttrbute() + ',' + randomColorAttrbute() + ',' + randomColorAttrbute() + ',';
+                reportChartData.datasets[0].backgroundColor.push(colorAttribute + '0.2)');
+                reportChartData.datasets[0].borderColor.push(colorAttribute + '1)');
+                reportChartData.datasets[0].data.push(instance.currentUsageLogs.get()[i].count);
               }
             }
-          } else if ($('#report-destination').val() === 'all') {
-            var subCat = instance.subCategories.get().find(each => each._id === $('#report-sub-category').val());
-            reportDestinations = instance.allDestinations.get().filter(function (each) {
-              return subCat.sensis_locations.includes(each.location_ref_id)
-            });
-          } else {
-            reportDestinations = instance.allDestinations.get().filter(function (each) {
-              return each._id === $('#report-destination').val();
-            });
-          }
+            reportChartData.datasets[0].label = "Destination";
+            break;
+          case 'user_session':
+            instance.reportFlag.set('user_session');
+            instance.dataTableHeaders.set(['Action', 'Date']);
+            instance.currentUsageLogs.set(allUsageLogs.filter(function (each) {
+              return (each.action === 'app start' || each.action === 'app loaded') && (new Date(each.createdAt) >= startDate) && (new Date(each.createdAt) <= endDate);
+            }).sort((a, b) => (a.createdAt < b.createdAt) ? 1 : ((b.createdAt < a.createdAt) ? -1 : 0)));
 
-          instance.currentUsageLogs.set(removeDuplicateContext(allUsageLogs.filter(function (each) {
-            return (each.action === 'list menu item selected') && (new Date(each.createdAt) >= startDate) && (new Date(each.createdAt) <= endDate)
-              && (reportDestinations.some(eachDestination => eachDestination.name === each.context))
-          }), 'context').sort((a, b) => (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0)));
-
-          for (var i = 0; i < instance.currentUsageLogs.get().length; i++) {
-            var temp = [];
-            temp.push(instance.currentUsageLogs.get()[i].context);
-            temp.push(instance.currentUsageLogs.get()[i].count);
-            tableData.push(temp);
-            if (i < 10) {
-              reportChartData.labels.push(instance.currentUsageLogs.get()[i].context);
-              var colorAttribute = 'rgba(' + randomColorAttrbute() + ',' + randomColorAttrbute() + ',' + randomColorAttrbute() + ',';
-              reportChartData.datasets[0].backgroundColor.push(colorAttribute + '0.2)');
-              reportChartData.datasets[0].borderColor.push(colorAttribute + '1)');
-              reportChartData.datasets[0].data.push(instance.currentUsageLogs.get()[i].count);
+            for (var i = 0; i < instance.currentUsageLogs.get().length; i++) {
+              var temp = [];
+              temp.push(capitalizeFirstLetter(instance.currentUsageLogs.get()[i].action));
+              temp.push(formatDate(instance.currentUsageLogs.get()[i].createdAt));
+              tableData.push(temp);
             }
-          }
-          reportChartData.datasets[0].label = "Destination";
-          break;
-        case 'user_session':
-          instance.reportFlag.set('user_session');
-          instance.dataTableHeaders.set(['Action', 'Date']);
-          instance.currentUsageLogs.set(allUsageLogs.filter(function (each) {
-            return (each.action === 'app start' || each.action === 'app loaded') && (new Date(each.createdAt) >= startDate) && (new Date(each.createdAt) <= endDate);
-          }).sort((a, b) => (a.createdAt < b.createdAt) ? 1 : ((b.createdAt < a.createdAt) ? -1 : 0)));
 
-          for (var i = 0; i < instance.currentUsageLogs.get().length; i++) {
-            var temp = [];
-            temp.push(capitalizeFirstLetter(instance.currentUsageLogs.get()[i].action));
-            temp.push(formatDate(instance.currentUsageLogs.get()[i].createdAt));
-            tableData.push(temp);
-          }
+            break;
 
-          break;
-
-        default:
-          instance.currentUsageLogs.set(false);
-          instance.reportFlag.set(false);
-          break;
+          default:
+            instance.currentUsageLogs.set(false);
+            instance.reportFlag.set(false);
+            break;
+        }
       }
+
       instance.reportChartData.set(reportChartData);
       instance.dataTableData.set(tableData);
       Meteor.setTimeout(() => {

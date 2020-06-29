@@ -583,7 +583,7 @@ Template.bottomSheetModal.events({
 
     var usage_log = {
       action: `${Meteor.settings.public.userAppActions.subMenuItemSelected}`,
-      subdomain: `${subdomain[0]}`,
+      subDomain: `${subdomain[0]}`,
       context: `${itemName}`
     };
     Meteor.call('UsageLog.insert', usage_log, (error, result) => {
@@ -718,7 +718,7 @@ function findData(item, inst, adminSettings, menu, itemUrl) {
   // );
   var usage_log = {
     action: `${Meteor.settings.public.userAppActions.subMenuItemSelected}`,
-    subdomain: `${subdomain}`,
+    subDomain: `${subdomain[0]}`,
     context: `${itemName}`
   };
   Meteor.call('UsageLog.insert', usage_log, (error, result) => {

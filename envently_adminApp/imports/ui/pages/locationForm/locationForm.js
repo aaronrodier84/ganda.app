@@ -190,7 +190,8 @@ Template.locationForm.events({
               categories: $('#editcategories').val(),
               suburb: $('#editlocationSuburb').val(),
               state: $('#editlocationState').val(),
-              postCode: $('#editlocationPostCode').val()
+              postCode: $('#editlocationPostCode').val(),
+              email: $('#editLocationEmail').val()
 
 
             };

@@ -434,7 +434,7 @@ Template.fab.events({
 
     var usage_log = {
         action: `${Meteor.settings.public.userAppActions.mainMenuOpened}`,
-        subdomain: `${subdomain[0]}`
+        subDomain: `${subdomain[0]}`
       };
     Meteor.call('UsageLog.insert', usage_log, (error, result) => {
       if (error) {

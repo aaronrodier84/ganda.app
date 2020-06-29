@@ -1,7 +1,6 @@
 
 export function getSubdomain(sd){
   if(Meteor.userId() && ( Roles.userIsInRole(Meteor.userId(), ['appUser'], 'appUser') || Roles.userIsInRole(Meteor.userId(), ['admin'], 'admin')))  {
-      // console.log("=========+++++++++",Meteor.user().profile.subdomainName,"^^^^^^^^^^^^^^")
       return Meteor.user().profile.subdomainName;
   }
   else if(Meteor.userId() && Roles.userIsInRole(Meteor.userId(),['super-admin'], Roles.GLOBAL_GROUP))
@@ -26,10 +25,11 @@ export function getSubdomain(sd){
       let subdomainName = hostname.split('.')[0].replace('http://','').replace('https://','');
       if(subdomainName === 'admin' || subdomainName === 'www')
       {
-        if (sd)
+        if (sd) {
           return sd;
-        else
+        } else {
           return false;
+        }
       }
       else {
         return subdomainName;

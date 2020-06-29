@@ -50,11 +50,11 @@ Template.mapbox.onCreated(function () {
   });
   // Logger.log({
   //   action: `${Meteor.settings.public.userAppActions.mapRender}`,
-  //   subdomain: `${subDomain}`
+  //   subDomain `${subDomain}`
   // });
   var usage_log = {
     action: `${Meteor.settings.public.userAppActions.mapRender}`,
-    subdomain: `${subDomain}`
+    subDomain: `${subDomain}`
   };
   Meteor.call('UsageLog.insert', usage_log, (error, result) => {
     if (error) {
@@ -650,6 +650,7 @@ Template.mapbox.events({
 
       var lang = TAPi18n.languages_names[language][0];
 
+      let subDomain = getSubdomain(getCookie("selectedSDForSA"));
       var promise = new Promise(function (res, rej) {
 
         // Logger.log({
@@ -660,6 +661,7 @@ Template.mapbox.events({
         var usage_log = {
           action: `${Meteor.settings.public.userAppActions.listMenuSelected}`,
           context: `${markerDetails[0].name}`,
+          subDomain: `${subDomain}`,
           language: `${lang}`
         };
         Meteor.call('UsageLog.insert', usage_log, (error, result) => {
@@ -680,6 +682,7 @@ Template.mapbox.events({
         // });
         var usage_log = {
           action: `${Meteor.settings.public.userAppActions.markerPressed}`,
+          subDomain: `${subDomain}`,
           context: `${markerDetails[0].name}`
         };
         Meteor.call('UsageLog.insert', usage_log, (error, result) => {
@@ -731,6 +734,7 @@ Template.mapbox.events({
       var lang = TAPi18n.languages_names[language][0];
 
       var promise = new Promise(function (res, rej) {
+        let subDomain = getSubdomain(getCookie("selectedSDForSA"));
 
         // Logger.log({
         //   action: `${Meteor.settings.public.userAppActions.listMenuSelected}`,
@@ -741,6 +745,7 @@ Template.mapbox.events({
         var usage_log = {
           action: `${Meteor.settings.public.userAppActions.listMenuSelected}`,
           context: `${markerDetails[0].name}`,
+          subDomain: `${subDomain}`,
           language: `${lang}`
         };
         Meteor.call('UsageLog.insert', usage_log, (error, result) => {
@@ -756,12 +761,14 @@ Template.mapbox.events({
 
       promise.then(function (result) {
 
+        let subDomain = getSubdomain(getCookie("selectedSDForSA"));
         // Logger.log({
         //   action: `${Meteor.settings.public.userAppActions.markerPressed}`, context: `${markerDetails[0].name}`
         // });
 
         var usage_log = {
           action: `${Meteor.settings.public.userAppActions.markerPressed}`,
+          subDomain: `${subDomain}`,
           context: `${markerDetails[0].name}`
         };
         Meteor.call('UsageLog.insert', usage_log, (error, result) => {
@@ -815,6 +822,7 @@ Template.mapbox.events({
       var lang = TAPi18n.languages_names[language][0];
 
       var promise = new Promise(function (res, rej) {
+        let subDomain = getSubdomain(getCookie("selectedSDForSA"));
 
         // Logger.log({
         //   action: `${Meteor.settings.public.userAppActions.listMenuSelected}`,
@@ -825,6 +833,7 @@ Template.mapbox.events({
         var usage_log = {
           action: `${Meteor.settings.public.userAppActions.listMenuSelected}`,
           context: `${markerDetails[0].name}`,
+          subDomain: `${subDomain}`,
           language: `${lang}`
         };
         Meteor.call('UsageLog.insert', usage_log, (error, result) => {
@@ -843,9 +852,11 @@ Template.mapbox.events({
         // Logger.log({
         //   action: `${Meteor.settings.public.userAppActions.detailsButtonPressed}`, context: `${markerDetails[0].name}`
         // });
+        let subDomain = getSubdomain(getCookie("selectedSDForSA"));
 
         var usage_log = {
           action: `${Meteor.settings.public.userAppActions.detailsButtonPressed}`,
+          subDomain: `${subDomain}`,
           context: `${markerDetails[0].name}`
         };
         Meteor.call('UsageLog.insert', usage_log, (error, result) => {
@@ -930,10 +941,12 @@ Template.mapbox.events({
         //   context: `${markerDetails[0].name}`,
         //   language: `${lang}`
         // });
+        let subDomain = getSubdomain(getCookie("selectedSDForSA"));
 
         var usage_log = {
           action: `${Meteor.settings.public.userAppActions.listMenuSelected}`,
           context: `${markerDetails[0].name}`,
+          subDomain: `${subDomain}`,
           language: `${lang}`
         };
         Meteor.call('UsageLog.insert', usage_log, (error, result) => {
@@ -954,8 +967,10 @@ Template.mapbox.events({
         //   context: `${markerDetails[0].name}`
         // });
 
+        let subDomain = getSubdomain(getCookie("selectedSDForSA"));
         var usage_log = {
           action: `${Meteor.settings.public.userAppActions.directionsButtonPressed}`,
+          subDomain: `${subDomain}`,
           context: `${markerDetails[0].name}`
         };
         Meteor.call('UsageLog.insert', usage_log, (error, result) => {

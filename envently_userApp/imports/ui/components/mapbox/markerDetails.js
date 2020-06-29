@@ -364,13 +364,16 @@ Template.markerDetails.events({
   },*/
   'click .details-link'(event) {
     const link = event.target.name;
+    var subdomain = document.location.hostname.split('.');
     // Logger.log({
     //   action: `${Meteor.settings.public.userAppActions.externalLinkPressed}`, context: `${link}`
     // });
     var usage_log = {
       action: `${Meteor.settings.public.userAppActions.externalLinkPressed}`,
+      subDomain: `${subdomain[0]}`,
       context: `${link}`
     };
+
     Meteor.call('UsageLog.insert', usage_log, (error, result) => {
       if (error) {
         console.log('error usage_log', error);
@@ -381,11 +384,13 @@ Template.markerDetails.events({
   },
   'click .website-link'(event) {
     const link = event.target.name;
+    var subdomain = document.location.hostname.split('.');
     // Logger.log({
     //   action: `${Meteor.settings.public.userAppActions.externalLinkPressed}`, context: `${link}`
     // });
     var usage_log = {
       action: `${Meteor.settings.public.userAppActions.externalLinkPressed}`,
+      subDomain: `${subdomain[0]}`,
       context: `${link}`
     };
     Meteor.call('UsageLog.insert', usage_log, (error, result) => {
@@ -404,6 +409,7 @@ Template.markerDetails.events({
   },
   'click .direct-icon'(event, inst) {
     // console.log(":: event - ", event.currentTarget.id);
+    var subdomain = document.location.hostname.split('.');
 
     $('#bottomSheetModalId').modal('close');
     let markerDetailModal = $(inst.find('#markerDetailModal'));
@@ -415,7 +421,8 @@ Template.markerDetails.events({
     //   action: `${Meteor.settings.public.userAppActions.directionsButtonPressed}`
     // });
     var usage_log = {
-      action: `${Meteor.settings.public.userAppActions.directionsButtonPressed}`
+      action: `${Meteor.settings.public.userAppActions.directionsButtonPressed}`,
+      subDomain: `${subdomain[0]}`,
     };
     Meteor.call('UsageLog.insert', usage_log, (error, result) => {
       if (error) {

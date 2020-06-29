@@ -79,6 +79,7 @@ Template.languageSelect.events({
       Session.update('lang', language);
       TAPi18n.setLanguage(language);
 
+     var subdomain = document.location.hostname.split('.');
 
 
       // console.log("loaded languages ====> " , TAPi18n.languages_names[language][0]);
@@ -90,6 +91,7 @@ Template.languageSelect.events({
 
      var usage_log = {
        action: `${Meteor.settings.public.userAppActions.languageSelected}`,
+       subDomain: `${subdomain[0]}`,
        language: `${TAPi18n.languages_names[language][0]}`
      };
      Meteor.call('UsageLog.insert', usage_log, (error, result) => {
