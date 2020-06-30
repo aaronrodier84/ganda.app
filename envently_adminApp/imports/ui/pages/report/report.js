@@ -405,20 +405,23 @@ Template.report.events({
 
         console.log('reportChartData', reportChartData);
 
-        instance.reportChartInstance.set(new Chart('report-chart', {
-          type: 'horizontalBar',
-          data: reportChartData,
-          options: {
-            maintainAspectRatio: false,
-            scales: {
-              xAxes: [{
-                ticks: {
-                  beginAtZero: true
-                }
-              }]
-            }
-          },
-        }));
+        if (reportChartData.labels.length > 0) {
+          instance.reportChartInstance.set(new Chart('report-chart', {
+            type: 'horizontalBar',
+            data: reportChartData,
+            options: {
+              maintainAspectRatio: false,
+              scales: {
+                xAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+              }
+            },
+          }));
+        }
+
 
         instance.isPageLoad.set(false);
 

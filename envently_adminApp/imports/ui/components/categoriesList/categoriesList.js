@@ -528,6 +528,7 @@ Template.categoriesList.events({
                             phone: $('#locationPhone').val(),
                             website: $('#locationWebsite').val(),
                             categories: $('#categories').val(),
+                            email: $('#locationEmail').val(),
                             latitude: inst.selectedCords.get().latitude,
                             longitude: inst.selectedCords.get().longitude
                         };
