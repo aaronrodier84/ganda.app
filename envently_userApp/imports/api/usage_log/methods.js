@@ -10,7 +10,7 @@ Meteor.methods({
     console.log('getdomain()', getSubdomain(fields['subDomain']));
     if (getSubdomain(fields['subDomain']) && dynamicCollections[getSubdomain(fields['subDomain']) + '_usage_log']) {
       console.log('subdomain success');
-      id = dynamicCollections[getSubdomain() + '_usage_log'].insert(fields);
+      id = dynamicCollections[getSubdomain(fields['subDomain']) + '_usage_log'].insert(fields);
     } else {
       console.log('direct usagelog success');
       id = UsageLog.insert(fields);
