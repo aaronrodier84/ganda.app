@@ -37,7 +37,7 @@ Template.landingPage.helpers({
       // console.log("siteSettings ===> " , siteSettings);
     }
 
-    // console.log(":: checkDataLoad ",siteSettings);
+    console.log(":: checkDataLoad ",siteSettings);
     
     return siteSettings
   },
