@@ -2,7 +2,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import { Subdomain } from './subdomain.js';
-import { create_dynamic_collection }  from '/imports/startup/both/dynamic_collections.js';
+import { create_dynamic_collection, remove_dynamic_collection }  from '/imports/startup/both/dynamic_collections.js';
 Meteor.methods({
 	'subdomain.insert' (subdomainData) {
 
@@ -24,10 +24,14 @@ Meteor.methods({
 			};
 		}
 	},
-	'subdomain.delete' (subdomainId) {
+	'subdomain.delete' (subdomainId, subDomainName) {
 		check (subdomainId, String)
 		Meteor.users.remove({ 'profile.subdomainId': subdomainId }, { multi:true });
+
 		Subdomain.remove(subdomainId);
+
+    remove_dynamic_collection(subDomainName);
+
 		return true
 	},
 	'subdomain.changeStatus' (subdomainId, newStatus) {

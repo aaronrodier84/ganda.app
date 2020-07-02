@@ -12,7 +12,7 @@
             <tr>
                 <th>Sub-domain Name</th>
                 <th>Status</th>
-                <th>AWS Bucket</th>
+                <!--<th>AWS Bucket</th>-->
                 <th>Actions</th>
             </tr>
           </thead>
@@ -24,7 +24,7 @@
                   {{ name }}<b>.ganda.app</b>
                 </td>
                 <td class="selectSubdomain">{{subdomainStatus status }}</td>
-                <td class="selectSubdomain">{{ awsBucket }}</td>
+                <!--<td class="selectSubdomain">{{ awsBucket }}</td>-->
                 <td>
                   <ul class="action-list">
                     <li>
@@ -32,11 +32,11 @@
                         <i class="small material-icons edit dark">edit</i>
                       </a>
                     </li>
-                    <!-- <li>
+                     <li>
                       <a href="#!" id="subDomainDelete" title="Delete">
                         <i class="small material-icons delete dark">delete</i>
                       </a>
-                    </li> -->
+                    </li>
                     <li>
                       <a href="#!" id="subDomainChangeStatus" title={{ statusTitle _id}}>
                         <i class="small material-icons {{ isColor _id}}">{{ checkStatus _id}}</i>
@@ -66,10 +66,10 @@
               </select>
               <label for="status">Status</label>
             </div>
-            <div class="input-field col s4">
-              <input id="awsBucket" type="text" name="subdomainAWSBucket" class="validate" required>
-              <label for="awsBucket">AWS Bucket</label>
-            </div>
+            <!--<div class="input-field col s4">-->
+              <!--<input id="awsBucket" type="text" name="subdomainAWSBucket" class="validate" required>-->
+              <!--<label for="awsBucket">AWS Bucket</label>-->
+            <!--</div>-->
             <div class="input-field col s2">
               <button class="btn waves-effect waves-light" type="submit" name="action">Submit
                 <i class="material-icons right">send</i>

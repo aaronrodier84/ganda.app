@@ -26,6 +26,7 @@ ddp-rate-limiter@1.0.7
 ddp-server@2.3.0
 deps@1.0.12
 diff-sequence@1.1.1
+drewy:datetimepicker@1.0.3
 dynamic-import@0.5.1
 ecmascript@0.12.7
 ecmascript-runtime@0.7.0
@@ -70,6 +71,7 @@ mobile-status-bar@1.0.14
 modern-browsers@0.1.4
 modules@0.13.0
 modules-runtime@0.10.3
+momentjs:moment@2.13.1
 mongo@1.6.2
 mongo-decimal@0.1.1
 mongo-dev-server@1.1.0
@@ -118,6 +120,7 @@ templating-tools@1.1.2
 themeteorchef:bert@2.1.1
 tmeasday:test-reporter-helpers@0.2.1
 tracker@1.2.0
+tsega:bootstrap3-datetimepicker@4.17.47
 ui@1.0.13
 underscore@1.0.10
 url@1.2.0

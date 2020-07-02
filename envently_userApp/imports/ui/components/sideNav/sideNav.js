@@ -12,7 +12,6 @@ import { TAPi18n } from 'meteor/tap:i18n';
 import _ from 'lodash';
 
 Template.sideNav.onCreated(() => {
-  console.log('test123');
     //this.activeTemplate = new ReactiveVar("");
     //this is not working here no idea why, If you find reason do let me know.
     Template.instance().activeTemplate = new ReactiveVar(false);

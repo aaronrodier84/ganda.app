@@ -23,11 +23,9 @@ Template.landingPage.helpers({
   checkDataLoad () {
 
     // console.log("under checkDataLoad");
-    
+
     let siteSettings = {}
     if (getSubdomain(getCookie("selectedSDForSA")) && dynamicCollections[getSubdomain(getCookie("selectedSDForSA"))+'_admin_settings']) {
-      // console.log("under if ");
-      // console.log("subDomain ===> " ,getCookie("selectedSDForSA")) 
       siteSettings = dynamicCollections[getSubdomain(getCookie("selectedSDForSA"))+'_admin_settings'].findOne({ subDomain: getCookie("selectedSDForSA") });
       // console.log("siteSettings ===> " , siteSettings);
     } else{
@@ -38,7 +36,8 @@ Template.landingPage.helpers({
 
       // console.log("siteSettings ===> " , siteSettings);
     }
-    // console.log(":: checkDataLoad ",siteSettings)
+
+    // console.log(":: checkDataLoad ",siteSettings);
     
     return siteSettings
   },

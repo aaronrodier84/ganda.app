@@ -17,14 +17,17 @@
           {{# if ifKiosk }}
           {{> landingPage getMenuItemName}}
           {{/ if }}
+
           {{> fab getMenuItemName}}
+
           {{#if showMap}}
-            {{> mapbox}}
+          {{> mapbox}}
           {{/if}}
-          
+
           {{#if pageLoading}}
-            {{> spinner}}
+          {{> spinner}}
           {{/if}}
+
           {{> bottomSheetModal getMenuItemName}}
           {{> dynamicFooter getMenuItemName}}
         </main>

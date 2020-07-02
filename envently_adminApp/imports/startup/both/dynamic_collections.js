@@ -174,8 +174,12 @@ export function create_dynamic_collection(subdomainName){
 
   });
    AdminSettings.find().fetch().forEach((d,i)=>{
-    if (dynamicCollections[subdomainName+'_admin_settings'])
+    if (dynamicCollections[subdomainName+'_admin_settings']) {
+      if (d.subDomain) {
+        d.subDomain = subdomainName;
+      }
       dynamicCollections[subdomainName+'_admin_settings'].insert(d);
+    }
 
    });
   Categories.find().fetch().forEach((d,i)=>{
@@ -189,8 +193,12 @@ export function create_dynamic_collection(subdomainName){
 
   });
   Clients.find().fetch().forEach((d,i)=>{
-    if (dynamicCollections[subdomainName+'_clients'])
+    if (dynamicCollections[subdomainName+'_clients']) {
+      if (d.client) {
+        d.client = subdomainName;
+      }
       dynamicCollections[subdomainName+'_clients'].insert(d);
+    }
 
   });
   CustomLocation.find().fetch().forEach((d,i)=>{
@@ -234,8 +242,12 @@ export function create_dynamic_collection(subdomainName){
 
   });
   RouteLocations.find().fetch().forEach((d,i)=>{
-    if (dynamicCollections[subdomainName+'_routeLocations'])
+    if (dynamicCollections[subdomainName+'_routeLocations']) {
+      if (d.subDomain) {
+        d.subDomain = subdomainName;
+      }
       dynamicCollections[subdomainName+'_routeLocations'].insert(d);
+    }
 
   });
   Usersdata.find().fetch().forEach((d,i)=>{
@@ -245,4 +257,13 @@ export function create_dynamic_collection(subdomainName){
   });
 }
 
+export function remove_dynamic_collection(subDomainName) {
+  var collectionList = ['admin_settings','cache_dev','categories','clients','custom_location','enquiry','event_dev','images','links','location_data','location_dev','location_coords','location_status','menu_item_dev','routeLocations','usersdata', 'usage_log', 'advertisement'];
+  collectionList.forEach((d,i)=>{
+    if (dynamicCollections[subDomainName+"_"+d]) {
+      dynamicCollections[subDomainName+"_"+d].rawCollection().drop();
+
+    }
+  });
+}
 /*** end added ***/

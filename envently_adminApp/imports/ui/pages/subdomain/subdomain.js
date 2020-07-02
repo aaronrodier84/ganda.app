@@ -131,7 +131,7 @@ Template.subdomain.events({
 		const subdomainData = {
 			name: $('#subdomainName').val().replace(" ", "").toLowerCase(),
 			status: $('#status').val(),
-			awsBucket: $('#awsBucket').val(),
+			awsBucket: $('#subdomainName').val().replace(" ", "").toLowerCase(),
 		};
 		const instance = Template.instance();
 		instance.isPageLoad.set(true);
@@ -158,12 +158,12 @@ Template.subdomain.events({
 				} else {
 					Bert.alert({
 		        title: 'Success',
-		        message: "Subdomain insert successfully",
+		        message: "Subdomain inserted successfully",
 		        type: 'success',
 		        style: 'growl-top-right',
 		        icon: 'fa-check',
 			    });
-			    $('#subdomainName, #status, #awsBucket').val('');
+			    $('#subdomainName, #status').val('');
 			  }
 			}
 			instance.isPageLoad.set(false);
@@ -184,7 +184,7 @@ Template.subdomain.events({
 				if (err || !res) {
 					Bert.alert({
 	          title: 'Warning',
-	          message: 'Sub-domain updatation failed',
+	          message: 'Sub-domain updation failed',
 	          type: 'danger',
 	          style: 'growl-top-right',
 	          icon: 'fa-warning',
@@ -246,12 +246,13 @@ Template.subdomain.events({
 	'click #subDomainDelete' (event, inst) {
 		event.preventDefault();
 		const subDomainId = this._id;
+		const subDomainName = this.name;
 		inst.isPageLoad.set(true);
-		Meteor.call('subdomain.delete', subDomainId, (err, res) => {
+		Meteor.call('subdomain.delete', subDomainId, subDomainName, (err, res) => {
 			if (err || !res) {
 				Bert.alert({
           title: 'Warning',
-          message: 'Sub-domain deletation failed',
+          message: 'Sub-domain deletion failed',
           type: 'danger',
           style: 'growl-top-right',
           icon: 'fa-warning',

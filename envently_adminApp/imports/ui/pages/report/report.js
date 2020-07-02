@@ -134,20 +134,10 @@ Template.report.onCreated(function () {
 Template.report.onRendered(function () {
   var self = this;
   Meteor.setTimeout(() => {
-    // Materialize components init
-    $('.datepicker').pickadate({
-      selectMonths: true,
-      selectYears: 2,
-      min: false,
-      max: [Date()],
-
-      container: '#reportContainer',
-      onSet(arg) {
-        if ('select' in arg) { // prevent closing on selecting month/year
-          this.close();
-        }
-      },
+    $(".datetimepicker").datetimepicker({
+      maxDate: 0
     });
+
   }, 500);
   $('.datepicker').on('mousedown', function (event) {
     event.preventDefault();
@@ -235,7 +225,6 @@ Template.report.events({
     var allUsageLogs = instance.allUsageLog.get();
     var startDate = new Date($('#report-start-date').val());
     var endDate = new Date($('#report-end-date').val());
-    endDate.setDate(endDate.getDate() + 1);
     if (!$('#report-start-date').val() || !$('#report-end-date').val()) {
       Bert.alert({
         title: 'Warning',
@@ -316,6 +305,7 @@ Template.report.events({
           case 'destination':
             instance.reportFlag.set('destination');
             var reportDestinations = [];
+
             if ($('#report-main-category').val() === 'all') {
               for (var i = 0; i < instance.menus.get().length; i++) {
                 var subCats = instance.menus.get()[i].items;
@@ -331,13 +321,15 @@ Template.report.events({
             } else if ($('#report-sub-category').val() === 'all') {
               var curMenus = instance.menus.get().find(each => each._id === $('#report-main-category').val());
               for (var i = 0; i < curMenus.items.length; i++) {
-
-                var destinationResult = instance.allDestinations.get().filter(function (each) {
-                  return curMenus.items[i].sensis_locations.includes(each.location_ref_id)
-                });
-                for (var j = 0; j < destinationResult.length; j++) {
-                  reportDestinations.push(destinationResult[j]);
+                if (curMenus.items[i].sensis_locations.length > 0) {
+                  var destinationResult = instance.allDestinations.get().filter(function (each) {
+                    return curMenus.items[i].sensis_locations.includes(each.location_ref_id)
+                  });
+                  for (var j = 0; j < destinationResult.length; j++) {
+                    reportDestinations.push(destinationResult[j]);
+                  }
                 }
+
               }
             } else if ($('#report-destination').val() === 'all') {
               var subCat = instance.subCategories.get().find(each => each._id === $('#report-sub-category').val());
@@ -368,6 +360,7 @@ Template.report.events({
                 reportChartData.datasets[0].data.push(instance.currentUsageLogs.get()[i].count);
               }
             }
+
             reportChartData.datasets[0].label = "Destination";
             break;
           case 'user_session':
@@ -486,9 +479,12 @@ Template.report.events({
       instance.subCategoryFlag.set(false);
     } else {
       instance.subCategoryFlag.set(true);
+
       instance.subCategories.set(instance.menus.get().find(function (each) {
         return each._id === $('#report-main-category').val();
-      }).items);
+      }).items.filter(function(each) { return each.sensis_locations.length > 0; }));
+
+      console.log('subCategories', instance.subCategories.get());
 
       Meteor.setTimeout(() => {
         $('#report-sub-category').material_select();

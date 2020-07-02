@@ -59,3 +59,5 @@ accounts-password@1.5.1
 tap:i18n
 mdg:meteor-apm-agent
 underscore
+tsega:bootstrap3-datetimepicker
+drewy:datetimepicker
