@@ -263,11 +263,9 @@ Template.geoJsonMap.helpers({
         //console.log("Helper pOints ", inst.userPoint.get())
         $("label[for='latLong']").attr({ 'class': 'active' });
 
-        if (!point || !point.geometry.coordinates.length) {
-          return;
-        } else {
+        if (!point || !point.geometry.coordinates.length)
           return `Latitude=-33.87659929440507, Longitude=151.2428284863807`;
-        }
+
             // console.log(":: co-ordinates - ",point.geometry.coordinates);
         // let cordss = point.geometry.coordinates;
         let isgeoFence = {};
