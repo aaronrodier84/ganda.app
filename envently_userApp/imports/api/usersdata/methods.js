@@ -45,7 +45,6 @@ Meteor.methods({
     Email.send({
       to: 'placemaking@woollahra.nsw.gov.au',
       cc: 'peter.kauter@woollahra.nsw.gov.au ',
-      bcc: 'amit.deligence@gmail.com',
       from: Meteor.settings.public.adminEmail,
       subject: subject,
       text: message,
@@ -63,7 +62,7 @@ Meteor.methods({
     // Send email
     Email.send({
       to: to,
-      from: 'envently@envent.com.au',
+      from: 'noreply@ganda.app',
       subject: subject,
       text: message,
     });

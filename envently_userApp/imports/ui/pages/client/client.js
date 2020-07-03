@@ -5,6 +5,7 @@ import { getSubdomain, getCookie, setCookie } from '/imports/startup/both/global
 import { screensaver } from '/imports/startup/client/globalHelpers.js';
 import { dynamicCollections } from '/imports/startup/both/dynamic_collections.js';
 import { AdminSettings } from '/imports/api/admin_settings/admin_settings.js';
+import { Subdomain } from '/imports/api/subdomain/subdomain.js';
 
 import './client.html';
 import '../../components/fab/fab.js';

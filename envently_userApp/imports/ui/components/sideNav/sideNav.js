@@ -2,6 +2,7 @@ import './sideNav.html';
 import { Meteor } from 'meteor/meteor';
 import { MapData } from '../mapbox/mapbox.js';
 import { Usersdata } from '/imports/api/usersdata/usersdata.js';
+import { Subdomain } from '/imports/api/subdomain/subdomain.js';
 import { dynamicCollections } from '/imports/startup/both/dynamic_collections.js';
 import { getSubdomain, getCookie, deleteAllCookies, setCookie } from '/imports/startup/both/global_function.js';
 import { AdminSettings } from '/imports/api/admin_settings/admin_settings.js';
@@ -95,21 +96,26 @@ Template.sideNav.helpers({
         return false;
     },
     currentClient(){
-        switch(Session.get("currentClient")){
-            case 'doublebay':
-                return "Double Bay";
-                break;
-            case 'paddington':
-                return "Paddington";
-                break;
-            case 'gctourism':
-                return "Gold Coast";
-                break;
-            default:
-                return "Double Bay";
-                break;
-
-        }
+      if (Subdomain.findOne({ name: Session.get("currentClient")})) {
+        return Subdomain.findOne({ name: getSubdomain(getCookie("selectedSDForSA"))}).title;
+      } else {
+        return 'Double Bay';
+      }
+        // switch(Session.get("currentClient")){
+        //     case 'doublebay':
+        //         return "Double Bay";
+        //         break;
+        //     case 'paddington':
+        //         return "Paddington";
+        //         break;
+        //     case 'gctourism':
+        //         return "Gold Coast";
+        //         break;
+        //     default:
+        //         return "Double Bay";
+        //         break;
+        //
+        // }
     },
     markers() {
         return _.sortBy(Session.get('markers'), marker => marker.markerName);

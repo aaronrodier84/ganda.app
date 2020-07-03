@@ -10,6 +10,7 @@ Template.subdomain.onCreated(function () {
 	this.selectedSubdomain = new ReactiveVar(null);
 	this.showEdit = new ReactiveVar(false);
 	this.isPageLoad = new ReactiveVar(false);
+	this.toRemoveSubDomain = new ReactiveVar(false);
 });
 
 Template.subdomain.onRendered(function () {
@@ -58,6 +59,10 @@ Template.subdomain.helpers({
 	subDomainId () {
 		const instance = Template.instance();
 		return instance.selectedSubdomain.get() || false;
+	},
+  toRemoveSubDomain () {
+    const instance = Template.instance();
+    return instance.toRemoveSubDomain.get() || false;
 	},
 	pageLoading () {
 		const instance = Template.instance();
@@ -131,7 +136,8 @@ Template.subdomain.events({
 		const subdomainData = {
 			name: $('#subdomainName').val().replace(" ", "").toLowerCase(),
 			status: $('#status').val(),
-			awsBucket: $('#subdomainName').val().replace(" ", "").toLowerCase(),
+      awsBucket: $('#subdomainName').val().replace(" ", "").toLowerCase(),
+      title: $('#subDomainTitle').val(),
 		};
 		const instance = Template.instance();
 		instance.isPageLoad.set(true);
@@ -243,22 +249,23 @@ Template.subdomain.events({
 		inst.selectedSubdomain.set(this._id);
 		$('#editModal').click();
 	},
-	'click #subDomainDelete' (event, inst) {
-		event.preventDefault();
-		const subDomainId = this._id;
-		const subDomainName = this.name;
-		inst.isPageLoad.set(true);
-		Meteor.call('subdomain.delete', subDomainId, subDomainName, (err, res) => {
-			if (err || !res) {
-				Bert.alert({
+	'submit #deleteSubDomainModal' (event, inst) {
+    event.preventDefault();
+    let subDomain = inst.toRemoveSubDomain.get();
+    const subDomainId = subDomain._id;
+    const subDomainName = subDomain.name;
+    inst.isPageLoad.set(true);
+    Meteor.call('subdomain.delete', subDomainId, subDomainName, (err, res) => {
+    	if (err || !res) {
+    		Bert.alert({
           title: 'Warning',
           message: 'Sub-domain deletion failed',
           type: 'danger',
           style: 'growl-top-right',
           icon: 'fa-warning',
         });
-			} else {
-				Bert.alert({
+    	} else {
+    		Bert.alert({
           title: 'Success',
           message: 'Sub-domain deleted',
           type: 'success',
@@ -268,7 +275,17 @@ Template.subdomain.events({
         inst.selectedSubdomain.set(null);
       }
       inst.isPageLoad.set(false);
-		});
+      $('#deleteSubDomainModal').modal('close');
+    });
+  },
+	'click #cancelDeleteSubDomain' (event, inst) {
+    event.preventDefault();
+    $('#deleteSubDomainModal').modal('close');
+  },
+	'click #subDomainDelete' (event, inst) {
+		inst.toRemoveSubDomain.set(this);
+		$('#deleteSubDomainModal').modal();
+    $('#deleteSubDomainModal').modal('open');
 	},
 	'click #subDomainChangeStatus' (event, inst) {
 		event.preventDefault();

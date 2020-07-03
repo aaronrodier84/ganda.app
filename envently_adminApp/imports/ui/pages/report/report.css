@@ -5,3 +5,15 @@ table.dataTable thead .sorting_asc:after {
 table.dataTable thead .sorting_desc:after {
 	content: '\25BC';
 }
+
+table.dataTable thead .sorting:after {
+	content: "\25B2";
+}
+
+.dataTables_wrapper > .row:first-child {
+	display: flex;
+}
+
+.col-sm-6 {
+	width: 50%
+}

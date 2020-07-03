@@ -6,10 +6,10 @@ import { Subdomain } from './subdomain.js';
 Meteor.methods({
 	
 	'checkSubdomainExist' (subdomain){
-		if(Subdomain.find({name: subdomain}).count() === 0)
+		if(Subdomain.find({name: subdomain, status: "active"}).count() === 0)
 		{
 			return false;
-		}else {
+		} else {
 			return subdomain;
 		}
 	}

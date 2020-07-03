@@ -307,17 +307,9 @@ Template.report.events({
             var reportDestinations = [];
 
             if ($('#report-main-category').val() === 'all') {
-              for (var i = 0; i < instance.menus.get().length; i++) {
-                var subCats = instance.menus.get()[i].items;
-                for (var j = 0; j < subCats.length; j++) {
-                  var destinationResult = instance.allDestinations.get().filter(function (each) {
-                    return subCats[j].sensis_locations.includes(each.location_ref_id);
-                  });
-                  for (var k = 0; k < destinationResult.length; k++) {
-                    reportDestinations.push(destinationResult[k]);
-                  }
-                }
-              }
+              instance.currentUsageLogs.set(removeDuplicateContext(allUsageLogs.filter(function (each) {
+                return (each.action === 'list menu item selected') && (new Date(each.createdAt) >= startDate) && (new Date(each.createdAt) <= endDate)
+              }), 'context').sort((a, b) => (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0)));
             } else if ($('#report-sub-category').val() === 'all') {
               var curMenus = instance.menus.get().find(each => each._id === $('#report-main-category').val());
               for (var i = 0; i < curMenus.items.length; i++) {
@@ -331,21 +323,29 @@ Template.report.events({
                 }
 
               }
+              instance.currentUsageLogs.set(removeDuplicateContext(allUsageLogs.filter(function (each) {
+                return (each.action === 'list menu item selected') && (new Date(each.createdAt) >= startDate) && (new Date(each.createdAt) <= endDate)
+                  && (reportDestinations.some(eachDestination => eachDestination.name === each.context))
+              }), 'context').sort((a, b) => (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0)));
             } else if ($('#report-destination').val() === 'all') {
               var subCat = instance.subCategories.get().find(each => each._id === $('#report-sub-category').val());
               reportDestinations = instance.allDestinations.get().filter(function (each) {
                 return subCat.sensis_locations.includes(each.location_ref_id)
               });
+              instance.currentUsageLogs.set(removeDuplicateContext(allUsageLogs.filter(function (each) {
+                return (each.action === 'list menu item selected') && (new Date(each.createdAt) >= startDate) && (new Date(each.createdAt) <= endDate)
+                  && (reportDestinations.some(eachDestination => eachDestination.name === each.context))
+              }), 'context').sort((a, b) => (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0)));
             } else {
               reportDestinations = instance.allDestinations.get().filter(function (each) {
                 return each._id === $('#report-destination').val();
               });
+              instance.currentUsageLogs.set(removeDuplicateContext(allUsageLogs.filter(function (each) {
+                return (each.action === 'list menu item selected') && (new Date(each.createdAt) >= startDate) && (new Date(each.createdAt) <= endDate)
+                  && (reportDestinations.some(eachDestination => eachDestination.name === each.context))
+              }), 'context').sort((a, b) => (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0)));
             }
 
-            instance.currentUsageLogs.set(removeDuplicateContext(allUsageLogs.filter(function (each) {
-              return (each.action === 'list menu item selected') && (new Date(each.createdAt) >= startDate) && (new Date(each.createdAt) <= endDate)
-                && (reportDestinations.some(eachDestination => eachDestination.name === each.context))
-            }), 'context').sort((a, b) => (a.count < b.count) ? 1 : ((b.count < a.count) ? -1 : 0)));
 
             for (var i = 0; i < instance.currentUsageLogs.get().length; i++) {
               var temp = [];
