@@ -263,25 +263,37 @@ Template.geoJsonMap.helpers({
         //console.log("Helper pOints ", inst.userPoint.get())
         $("label[for='latLong']").attr({ 'class': 'active' });
 
+      console.log('123', point);
         if (!point || !point.geometry.coordinates.length)
             return;
             // console.log(":: co-ordinates - ",point.geometry.coordinates);
         // let cordss = point.geometry.coordinates;
         let isgeoFence = {};
         if (getSubdomain(getCookie("selectedSDForSA")) && dynamicCollections[getSubdomain(getCookie("selectedSDForSA"))+'_admin_settings']) {
+            console.log('1');
             isgeoFence = dynamicCollections[getSubdomain(getCookie("selectedSDForSA"))+'_admin_settings'].findOne({ subDomain: getSubdomain(getCookie("selectedSDForSA")) });
         } else {
+          console.log('2');
             isgeoFence = AdminSettings.findOne({ subDomain: 'doublebay' });
         }
         if (isgeoFence && isgeoFence.geoFence) {
+          console.log('3');
             let cords = {};
             if (getSubdomain(getCookie("selectedSDForSA")) && dynamicCollections[getSubdomain(getCookie("selectedSDForSA"))+'_admin_settings']) {
+              console.log('4');
                 cords = dynamicCollections[getSubdomain(getCookie("selectedSDForSA"))+'_admin_settings'].findOne({ subDomain: getSubdomain(getCookie("selectedSDForSA")) }).geoFence.defaultCords.geometry.coordinates;
             } else {
+              console.log('5');
                 cords = AdminSettings.findOne({ subDomain: 'doublebay' }).geoFence.defaultCords.geometry.coordinates;
             }
-            return `Latitude=${cords[1]}, Longitude=${cords[0]}`;
+            console.log('12', cords);
+            if (cords) {
+              return `Latitude=${cords[1]}, Longitude=${cords[0]}`;
+            } else {
+              return `Latitude=-33.87659929440507, Longitude=151.2428284863807`;
+            }
         } else {
+          console.log('6');
             // cordss = point.geometry.coordinates;
           // return `Latitude=${cordss[1]}, Longitude=${cordss[0]}`;
           return `Latitude=-33.87659929440507, Longitude=151.2428284863807`;
