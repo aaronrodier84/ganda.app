@@ -169,7 +169,7 @@ Template.subdomain.events({
 		        style: 'growl-top-right',
 		        icon: 'fa-check',
 			    });
-			    $('#subdomainName, #status').val('');
+			    $('#subdomainName, #status, #subDomainTitle').val('');
 			  }
 			}
 			instance.isPageLoad.set(false);

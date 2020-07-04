@@ -218,10 +218,16 @@ Template.geoJsonMap.events({
         if (!inst.userPoint.get()) {
             // console.log(":: Please selecte co-ordinates first.");
         }
+        let userPoint = inst.userPoint.get();
+        userPoint.geometry.coordinates = [];
+        let latLong = $('#latLong').val();
+
+        userPoint.geometry.coordinates.push(parseFloat(latLong.split(',')[1].split('=')[1]));
+        userPoint.geometry.coordinates.push(parseFloat(latLong.split(',')[0].split('=')[1]));
         let insertObj = {
             shape: inst.userShape.get(),
-            point: inst.userPoint.get(),
-            zoom: inst.zoomLevel.get()
+            point: userPoint,
+            zoom: parseInt($('#zoom-level').val())
         };
         console.log("insertObj::: ", insertObj);
         Meteor.call('AdminSettings.updateGeoFence', insertObj,getCookie("selectedSDForSA"), (error, status) => {

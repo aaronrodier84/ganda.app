@@ -153,6 +153,43 @@ export function create_dynamic_collection(subdomainName){
       }
     });
 
+  if (dynamicCollections[subdomainName+'_admin_settings']) {
+    var entry = {
+      "adminIps": "",
+      "branding": "",
+      "cacheRefreshTime": "",
+      "copyright": "",
+      "createdAt": new Date(),
+      "geoFence" : {
+        "zoomLevel" : 14,
+        "defaultCords" : {
+          "id" : "b0e1e7144ac57cbf35923ba45ce662c2",
+          "type" : "Feature",
+          "properties" : {
+
+          },
+          "geometry" : {
+            "coordinates" : [
+              151.2428284863807,
+              -33.87659929440507
+            ],
+            "type" : "Point"
+          }
+        }
+      },
+      "privacypolicy": "",
+      "rssFeed": "",
+      "rssFeedLive": "",
+      "subDomain": subdomainName,
+      "suburb": "",
+      "termsservice": "",
+      "updateAt": new Date(),
+      "updatedAt": new Date(),
+      "userId": ""
+    };
+    dynamicCollections[subdomainName+'_admin_settings'].insert(entry);
+  }
+
  /* MenuItemDev.find().fetch().forEach((d,i)=>{
     if (dynamicCollections[subdomainName+'_menu_item_dev']) {
       dynamicCollections[subdomainName+'_menu_item_dev'].insert({
@@ -168,93 +205,93 @@ export function create_dynamic_collection(subdomainName){
     }
   })
 */
-  MenuItemDev.find().fetch().forEach((d,i)=>{
-    if (dynamicCollections[subdomainName+'_menu_item_dev'])
-      dynamicCollections[subdomainName+'_menu_item_dev'].insert(d);
-
-  });
-   AdminSettings.find().fetch().forEach((d,i)=>{
-    if (dynamicCollections[subdomainName+'_admin_settings']) {
-      if (d.subDomain) {
-        d.subDomain = subdomainName;
-      }
-      dynamicCollections[subdomainName+'_admin_settings'].insert(d);
-    }
-
-   });
-  Categories.find().fetch().forEach((d,i)=>{
-    if (dynamicCollections[subdomainName+'_categories'])
-      dynamicCollections[subdomainName+'_categories'].insert(d);
-
-  });
-  CacheDev.find().fetch().forEach((d,i)=>{
-    if (dynamicCollections[subdomainName+'_cache_dev'])
-      dynamicCollections[subdomainName+'_cache_dev'].insert(d);
-
-  });
-  Clients.find().fetch().forEach((d,i)=>{
-    if (dynamicCollections[subdomainName+'_clients']) {
-      if (d.client) {
-        d.client = subdomainName;
-      }
-      dynamicCollections[subdomainName+'_clients'].insert(d);
-    }
-
-  });
-  CustomLocation.find().fetch().forEach((d,i)=>{
-    if (dynamicCollections[subdomainName+'_custom_location'])
-      dynamicCollections[subdomainName+'_custom_location'].insert(d);
-
-  });
+  // MenuItemDev.find().fetch().forEach((d,i)=>{
+  //   if (dynamicCollections[subdomainName+'_menu_item_dev'])
+  //     dynamicCollections[subdomainName+'_menu_item_dev'].insert(d);
+  //
+  // });
+  //  AdminSettings.find().fetch().forEach((d,i)=>{
+  //   if (dynamicCollections[subdomainName+'_admin_settings']) {
+  //     if (d.subDomain) {
+  //       d.subDomain = subdomainName;
+  //     }
+  //     dynamicCollections[subdomainName+'_admin_settings'].insert(d);
+  //   }
+  //
+  //  });
+  // Categories.find().fetch().forEach((d,i)=>{
+  //   if (dynamicCollections[subdomainName+'_categories'])
+  //     dynamicCollections[subdomainName+'_categories'].insert(d);
+  //
+  // });
+  // CacheDev.find().fetch().forEach((d,i)=>{
+  //   if (dynamicCollections[subdomainName+'_cache_dev'])
+  //     dynamicCollections[subdomainName+'_cache_dev'].insert(d);
+  //
+  // });
+  // Clients.find().fetch().forEach((d,i)=>{
+  //   if (dynamicCollections[subdomainName+'_clients']) {
+  //     if (d.client) {
+  //       d.client = subdomainName;
+  //     }
+  //     dynamicCollections[subdomainName+'_clients'].insert(d);
+  //   }
+  //
+  // });
+  // CustomLocation.find().fetch().forEach((d,i)=>{
+  //   if (dynamicCollections[subdomainName+'_custom_location'])
+  //     dynamicCollections[subdomainName+'_custom_location'].insert(d);
+  //
+  // });
   /*Enquiry.find().fetch().forEach((d,i)=>{
     if (dynamicCollections[subdomainName+'_enquiry'])
       dynamicCollections[subdomainName+'_enquiry'].insert(d);
 
   });*/
-  EventDev.find().fetch().forEach((d,i)=>{
-    if (dynamicCollections[subdomainName+'_event_dev'])
-      dynamicCollections[subdomainName+'_event_dev'].insert(d);
+  // EventDev.find().fetch().forEach((d,i)=>{
+  //   if (dynamicCollections[subdomainName+'_event_dev'])
+  //     dynamicCollections[subdomainName+'_event_dev'].insert(d);
+  //
+  // });
+  // Links.find().fetch().forEach((d,i)=>{
+  //   if (dynamicCollections[subdomainName+'_links'])
+  //     dynamicCollections[subdomainName+'_links'].insert(d);
+  //
+  // });
+  // LocationData.find().fetch().forEach((d,i)=>{
+  //   if (dynamicCollections[subdomainName+'_location_data'])
+  //     dynamicCollections[subdomainName+'_location_data'].insert(d);
+  //
+  // });
+  // LocationDev.find().fetch().forEach((d,i)=>{
+  //   if (dynamicCollections[subdomainName+'_location_dev'])
+  //     dynamicCollections[subdomainName+'_location_dev'].insert(d);
 
-  });
-  Links.find().fetch().forEach((d,i)=>{
-    if (dynamicCollections[subdomainName+'_links'])
-      dynamicCollections[subdomainName+'_links'].insert(d);
-
-  });
-  LocationData.find().fetch().forEach((d,i)=>{
-    if (dynamicCollections[subdomainName+'_location_data'])
-      dynamicCollections[subdomainName+'_location_data'].insert(d);
-
-  });
-  LocationDev.find().fetch().forEach((d,i)=>{
-    if (dynamicCollections[subdomainName+'_location_dev'])
-      dynamicCollections[subdomainName+'_location_dev'].insert(d);
-
-  });
-  LocationStatus.find().fetch().forEach((d,i)=>{
-    if (dynamicCollections[subdomainName+'_location_status'])
-      dynamicCollections[subdomainName+'_location_status'].insert(d);
-
-  });
-  LocationCoords.find().fetch().forEach((d,i)=>{
-    if (dynamicCollections[subdomainName+'_location_coords'])
-      dynamicCollections[subdomainName+'_location_coords'].insert(d);
-
-  });
-  RouteLocations.find().fetch().forEach((d,i)=>{
-    if (dynamicCollections[subdomainName+'_routeLocations']) {
-      if (d.subDomain) {
-        d.subDomain = subdomainName;
-      }
-      dynamicCollections[subdomainName+'_routeLocations'].insert(d);
-    }
-
-  });
-  Usersdata.find().fetch().forEach((d,i)=>{
-    if (dynamicCollections[subdomainName+'_usersdata'])
-      dynamicCollections[subdomainName+'_usersdata'].insert(d);
-
-  });
+  // });
+  // LocationStatus.find().fetch().forEach((d,i)=>{
+  //   if (dynamicCollections[subdomainName+'_location_status'])
+  //     dynamicCollections[subdomainName+'_location_status'].insert(d);
+  //
+  // });
+  // LocationCoords.find().fetch().forEach((d,i)=>{
+  //   if (dynamicCollections[subdomainName+'_location_coords'])
+  //     dynamicCollections[subdomainName+'_location_coords'].insert(d);
+  //
+  // });
+  // RouteLocations.find().fetch().forEach((d,i)=>{
+  //   if (dynamicCollections[subdomainName+'_routeLocations']) {
+  //     if (d.subDomain) {
+  //       d.subDomain = subdomainName;
+  //     }
+  //     dynamicCollections[subdomainName+'_routeLocations'].insert(d);
+  //   }
+  //
+  // });
+  // Usersdata.find().fetch().forEach((d,i)=>{
+  //   if (dynamicCollections[subdomainName+'_usersdata'])
+  //     dynamicCollections[subdomainName+'_usersdata'].insert(d);
+  //
+  // });
 }
 
 export function remove_dynamic_collection(subDomainName) {
