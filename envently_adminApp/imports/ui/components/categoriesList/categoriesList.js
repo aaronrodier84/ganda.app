@@ -126,6 +126,11 @@ Template.categoriesList.onRendered(function categoriesListOnRendered() {
                 }
             },
         });
+
+        $('.datepicker').on('mousedown', function (event) {
+            event.preventDefault();
+        });
+
         $('#eventsList').modal({
             ready: (modal, trigger) => { // Callback for Modal open. Modal and trigger parameters available.
                 this.loadMap("eventMapPane");

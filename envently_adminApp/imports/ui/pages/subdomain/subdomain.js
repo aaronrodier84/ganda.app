@@ -79,7 +79,8 @@ Template.subdomain.helpers({
 		data = {
 			name: subdomain.name || '',
 			status: subdomain.status || '',
-			awsBucket: subdomain.awsBucket || '',
+      awsBucket: subdomain.awsBucket || '',
+      title: subdomain.title || '',
 		};
 		return data;
 	},
@@ -183,7 +184,7 @@ Template.subdomain.events({
 			const subdomainData = {
 				subDomainId: subDomainId,
 				name: $('#editSubdomainName').val().replace(" ", "").toLowerCase(),
-				awsBucket: $('#editAwsBucket').val(),
+				title: $('#editSubodmainTitle').val(),
 			};
 			instance.isPageLoad.set(true);
 			Meteor.call('subdomain.edit', subdomainData, (err, res) => {

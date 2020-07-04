@@ -5,6 +5,7 @@ import {
 import { getCookie } from '/imports/startup/both/global_function.js';
 import { TAPi18n } from 'meteor/tap:i18n';
 import './externalResource.js';
+import { v4 as uuidv4 } from 'uuid';
 
 Template.newMenuItemModal.onCreated(function() {
     this.loadTemplate = new ReactiveVar(false);
@@ -172,7 +173,7 @@ Template.newMenuItemModal.events({
               // Add language option to array
         });
         const clientObject = {
-            _id: Meteor.uuid(),
+            _id: uuidv4(),
             menuKey: FlowRouter.getParam('menuItem'),
             name: name,
             client: FlowRouter.getParam('client'),

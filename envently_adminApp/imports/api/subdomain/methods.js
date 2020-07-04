@@ -49,7 +49,7 @@ Meteor.methods({
 		const checkUpdate = Subdomain.update(subdomainData.subDomainId, {
 			$set:{
 				name: subdomainData.name,
-				awsBucket: subdomainData.awsBucket,
+				title: subdomainData.title,
 			},
 		});
 		return true
