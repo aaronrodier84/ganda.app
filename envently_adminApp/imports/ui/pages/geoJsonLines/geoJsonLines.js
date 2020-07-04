@@ -15,16 +15,33 @@ Template.geoJsonMap.onCreated(function() {
     // console.log(" :: 11 getCookie('selectedSDForSA') ",getCookie("selectedSDForSA"))
     Meteor.call('AdminSettings.details',getCookie("selectedSDForSA"), (error, details) => {
         if (error) {
-            // console.log(":: error inside AdminSettings.details - ", error);
+            console.log(":: error inside AdminSettings.details - ", error);
         } else {
+          console.log('details', details);
             if (details && details.geoFence) {
                 this.zoomLevel.set(details.geoFence.zoomLevel);
 
-                if (details.geoFence.defaultCords)
-                    this.userPoint.set(details.geoFence.defaultCords);
+                if (details.geoFence.defaultCords) {
+                  this.userPoint.set(details.geoFence.defaultCords);
+                }
 
-                if (details.geoFence.shape)
-                    this.userShape.set(details.geoFence.shape);
+                if (details.geoFence.shape) {
+                  this.userShape.set(details.geoFence.shape);
+                }
+            } else {
+              this.zoomLevel.set(14);
+
+              this.userPoint.set({
+                geometry: {
+                    coordinates: [
+                      151.2428284863807,
+                      -33.87659929440507
+                    ],
+                  type: "Point"
+                },
+                properties: {},
+                type: "Feature"
+              });
             }
         }
     });
@@ -136,7 +153,7 @@ Template.geoJsonMap.onRendered(function() {
 
     });
 
-    //Meteor.setTimeout(() => { 
+    //Meteor.setTimeout(() => {
         $('#geoJsonMapModal').modal({
             ready: (modal, trigger) => {
                 this.autorun((computation) => {
@@ -153,10 +170,10 @@ Template.geoJsonMap.onRendered(function() {
                             } else {
                                 isGeoFence = AdminSettings.findOne({ subDomain: 'doublebay' });
                             }
-                            if (isGeoFence && isGeoFence.geoFence) {        
+                            if (isGeoFence && isGeoFence.geoFence) {
                                 let userShape = isGeoFence.geoFence.shape;
                                 this.draw.add(userShape);
-                            }  
+                            }
                         }
                         if (this.userPoint && this.userPoint.get()) {
                             this.draw.add(this.userPoint.get());
@@ -218,7 +235,7 @@ Template.geoJsonMap.events({
 
                     if(insertObj.point.geometry && insertObj.point.geometry.coordinates)
                         Session.set('defaultCords', insertObj.point.geometry.coordinates);
-                    
+
                     if(insertObj.zoom)
                         Session.set('defaultZoomLevel', insertObj.zoom);
 
@@ -255,7 +272,7 @@ Template.geoJsonMap.helpers({
           return 14;
         }
     },
-    
+
 
     cordinates() {
         let inst = Template.instance();
@@ -264,7 +281,7 @@ Template.geoJsonMap.helpers({
         $("label[for='latLong']").attr({ 'class': 'active' });
 
         if (!point || !point.geometry.coordinates.length)
-          return `Latitude=-33.87659929440507, Longitude=151.2428284863807`;
+          return;
 
             // console.log(":: co-ordinates - ",point.geometry.coordinates);
         // let cordss = point.geometry.coordinates;
@@ -283,9 +300,9 @@ Template.geoJsonMap.helpers({
             }
             return `Latitude=${cords[1]}, Longitude=${cords[0]}`;
         } else {
-            // cordss = point.geometry.coordinates;
-          // return `Latitude=${cordss[1]}, Longitude=${cordss[0]}`;
-          return `Latitude=-33.87659929440507, Longitude=151.2428284863807`;
+          let cordss = point.geometry.coordinates;
+          return `Latitude=${cordss[1]}, Longitude=${cordss[0]}`;
+          // return `Latitude=-33.87659929440507, Longitude=151.2428284863807`;
         }
     },
 
