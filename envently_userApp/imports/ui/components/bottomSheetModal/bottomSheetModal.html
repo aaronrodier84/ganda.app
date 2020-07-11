@@ -49,7 +49,8 @@
                         {{#each items}}
                         {{#if isPublish _id}}
                         <li class="collection-item avatar locate valign-wrapper" id="{{_id}}"
-                            style="cursor:pointer; background-color: {{ bottomSheetSubMenu.listBackgroundColor }}">
+                            style="cursor:pointer; background-color: {{ bottomSheetSubMenu.listBackgroundColor }}"
+                            data-title="{{ dynamicLangMenuRss name }}" data-icon="{{ getMenuItemIcon preference }}" data-color="{{getBaseMenuColor selectedMenu.preference}}">
                             <div class="side-icon" style="background-color: {{ bottomSheetSubMenu.iconBoxColor }}">
                                 <img src="./assets/img/maki-white/{{getMenuItemIcon preference}}.svg"
                                     class="menu-item-img circle" id="{{_id}}"
@@ -64,7 +65,7 @@
                         <!-- /////////////////////////////////////////////////////////////// -->
                         {{#each currentEvents}}
                         <li class="collection-item avatar locate-event valign-wrapper" data-title={{title}}
-                            style="cursor:pointer; background-color: {{ bottomSheetSubMenu.listBackgroundColor }}">
+                            style="cursor:pointer; background-color: {{ bottomSheetSubMenu.listBackgroundColor }}" data-icon="{{ getMenuItemIcon selectedMenu.preference }}" data-color="{{getBaseMenuColor selectedMenu.preference}}">
                             <div class="side-icon" style="background-color: {{ bottomSheetSubMenu.iconBoxColor }}">
                                 <img src="./assets/img/maki-white/{{getMenuItemIcon selectedMenu.preference}}.svg"
                                     class="menu-item-img circle"
@@ -79,7 +80,8 @@
                         {{#each items}}
                         {{#if isPublish _id}}
                         <li class="collection-item avatar locate valign-wrapper" id="{{_id}}"
-                            style="cursor:pointer; background-color: {{ bottomSheetSubMenu.listBackgroundColor }}">
+                            style="cursor:pointer; background-color: {{ bottomSheetSubMenu.listBackgroundColor }}"
+                            data-title="{{ dynamicLangMenuRss name }}" data-icon="{{ getMenuItemIcon preference }}" data-color="{{getBaseMenuColor selectedMenu.preference}}">
                             <div class="side-icon" style="background-color: {{ bottomSheetSubMenu.iconBoxColor }}">
                                 <img src="./assets/img/maki-white/{{getMenuItemIcon preference}}.svg"
                                     class="menu-item-img circle" id="{{_id}}"

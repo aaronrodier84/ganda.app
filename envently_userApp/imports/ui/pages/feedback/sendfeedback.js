@@ -2,6 +2,7 @@ import { AdminSettings } from '/imports/api/admin_settings/admin_settings.js';
 import './sendfeedback.html';
 import { dynamicCollections } from '/imports/startup/both/dynamic_collections.js';
 import { getSubdomain, getCookie } from '/imports/startup/both/global_function.js';
+import { Subdomain } from '/import/api/subdomain/subdomain.js';
 
 Template.sendfeedback.onCreated(function() {
     const { ReactiveVar }  =  require('meteor/reactive-var');
@@ -55,6 +56,12 @@ Template.sendfeedback.events({
 			to = 'justin@envent.com.au',
 			subject = 'Guest FeedBack';
 		Session.set('showLoadingSpinner', true);
+
+		if (Subdomain.findOne({ name: getCookie("selectedSDForSA")})) {
+		  if (Subdomain.findOne({ name: getCookie("selectedSDForSA")}).contactEmail) {
+		    to = Subdomain.findOne({ name: getCookie("selectedSDForSA")}).contactEmail;
+      }
+    }
 		Meteor.call("usersdata.sendFeedBack", to , subject, feedback,getCookie("selectedSDForSA"),function(err,data){
 			Session.set('showLoadingSpinner', false);
 			if(err){

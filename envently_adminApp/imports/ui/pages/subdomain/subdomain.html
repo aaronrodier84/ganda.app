@@ -55,7 +55,7 @@
         <h5>Create Sub-domain</h5>
         <form id="subdomainForm">
           <div class="row">
-            <div class="input-field col s4">
+            <div class="input-field col s3">
               <input id="subdomainName" name="subdomainName" type="text" class="validate" required>
               <label for="subdomainName">Sub-domain Name</label>
             </div>
@@ -66,9 +66,13 @@
               </select>
               <label for="status">Status</label>
             </div>
-            <div class="input-field col s4">
+            <div class="input-field col s3">
               <input id="subDomainTitle" type="text" name="subDomainTitle" class="validate" required>
               <label for="subDomainTitle">SubDomain Title</label>
+            </div>
+            <div class="input-field col s2">
+              <input id="subDomainEmail" type="email" name="subDomainEmail" class="validate" required>
+              <label for="subDomainEmail">Contact Email</label>
             </div>
             <div class="input-field col s2">
               <button class="btn waves-effect waves-light" type="submit" name="action">Submit
@@ -98,6 +102,12 @@
               <label class="active" for="editSubodmainTitle">Sub-domain Title</label>
             </div>
           </div>
+         <div class="row">
+           <div class="input-field col s12">
+             <input id="editSubodmainEmail" type="email" class="validate" value={{showValue.contactEmail}} required>
+             <label class="active" for="editSubodmainEmail">Contact Email</label>
+           </div>
+         </div>
           <div class="row">
             <div class="input-field col s6">
               <button class="btn waves-effect waves-light" type="submit">Submit

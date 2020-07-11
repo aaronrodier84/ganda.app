@@ -81,6 +81,7 @@ Template.subdomain.helpers({
 			status: subdomain.status || '',
       awsBucket: subdomain.awsBucket || '',
       title: subdomain.title || '',
+      contactEmail: subdomain.contactEmail || '',
 		};
 		return data;
 	},
@@ -139,6 +140,7 @@ Template.subdomain.events({
 			status: $('#status').val(),
       awsBucket: $('#subdomainName').val().replace(" ", "").toLowerCase(),
       title: $('#subDomainTitle').val(),
+      contactEmail: $('#subDomainEmail').val(),
 		};
 		const instance = Template.instance();
 		instance.isPageLoad.set(true);
@@ -170,7 +172,7 @@ Template.subdomain.events({
 		        style: 'growl-top-right',
 		        icon: 'fa-check',
 			    });
-			    $('#subdomainName, #status, #subDomainTitle').val('');
+			    $('#subdomainName, #status, #subDomainTitle, #subDomainEmail').val('');
 			  }
 			}
 			instance.isPageLoad.set(false);
@@ -184,7 +186,8 @@ Template.subdomain.events({
 			const subdomainData = {
 				subDomainId: subDomainId,
 				name: $('#editSubdomainName').val().replace(" ", "").toLowerCase(),
-				title: $('#editSubodmainTitle').val(),
+        title: $('#editSubodmainTitle').val(),
+        contactEmail: $('#editSubodmainEmail').val(),
 			};
 			instance.isPageLoad.set(true);
 			Meteor.call('subdomain.edit', subdomainData, (err, res) => {

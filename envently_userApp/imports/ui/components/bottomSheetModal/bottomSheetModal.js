@@ -453,6 +453,15 @@ Template.bottomSheetModal.events({
     Session.set('menu', menu);*/
     Session.set('itemUrl', itemUrl);
     Session.set("isEventMenuSelected", false);
+
+    var subCategoryHeader = {
+      title: event.currentTarget.dataset.title,
+      icon: event.currentTarget.dataset.icon,
+      color: event.currentTarget.dataset.color,
+    };
+    console.log('event', event);
+    console.log('inst', subCategoryHeader);
+    Session.set('subCategoryHeader', subCategoryHeader);
   },
 
   'change #eventFrom'(event, inst) {
@@ -604,6 +613,14 @@ Template.bottomSheetModal.events({
     Session.set("currentMenu", null);
     Session.set('singleMarker', false);
     Session.set("isEventMenuSelected", false);
+
+    var subCategoryHeader = {
+      title: event.currentTarget.dataset.title,
+      icon: event.currentTarget.dataset.icon,
+      color: event.currentTarget.dataset.color,
+    };
+    console.log('subCategoryHeader', subCategoryHeader);
+    Session.set('subCategoryHeader', subCategoryHeader);
   },
 
   'click #eventFrom'(event, inst) {
@@ -667,6 +684,9 @@ Template.bottomSheetModal.events({
       templateInstance: function () {
       }
     }, event);
+  },
+  'click .custom-close'(event, inst) {
+    Session.set('subCategoryHeader', false);
   }
 });
 

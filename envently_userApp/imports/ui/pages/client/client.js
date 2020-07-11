@@ -22,6 +22,7 @@ Template.client.onCreated(function clientOnCreated() {
   const { ReactiveVar }  =  require('meteor/reactive-var');
   Session.setDefault('showMap', false);
   Session.setDefault('siteSettings', false);
+  Session.set('subCategoryHeader', false);
   Session.set('showLoadingSpinner',false);
   Session.set('selectedSubMenu', Session.get('selectedSubMenu')?Session.get('selectedSubMenu'):false);
   Session.set('isAdmin', false);
@@ -136,6 +137,9 @@ Template.client.helpers({
   },
   currentClient() {
     return Session.get('currentClient');
+  },
+  subCategoryHeader() {
+    return Session.get('subCategoryHeader');
   },
   customCss() {
     

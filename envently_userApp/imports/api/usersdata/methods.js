@@ -43,7 +43,7 @@ Meteor.methods({
   'usersdata.sendFeedBack'(to, subject, message){
     check([to, subject, message], [String]);
     Email.send({
-      to: 'placemaking@woollahra.nsw.gov.au',
+      to: to,
       cc: 'peter.kauter@woollahra.nsw.gov.au ',
       from: Meteor.settings.public.adminEmail,
       subject: subject,
@@ -62,7 +62,7 @@ Meteor.methods({
     // Send email
     Email.send({
       to: to,
-      from: 'noreply@ganda.app',
+      from: Meteor.settings.public.adminEmail,
       subject: subject,
       text: message,
     });

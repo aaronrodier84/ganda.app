@@ -24,10 +24,12 @@ Template.landingPage.helpers({
 
     // console.log("under checkDataLoad");
 
-    let siteSettings = {}
+    let siteSettings = {};
     if (getSubdomain(getCookie("selectedSDForSA")) && dynamicCollections[getSubdomain(getCookie("selectedSDForSA"))+'_admin_settings']) {
       siteSettings = dynamicCollections[getSubdomain(getCookie("selectedSDForSA"))+'_admin_settings'].findOne({ subDomain: getCookie("selectedSDForSA") });
-      // console.log("siteSettings ===> " , siteSettings);
+      console.log('dynamic', dynamicCollections[getSubdomain(getCookie("selectedSDForSA"))+'_admin_settings'].find().fetch());
+      console.log('cookie', getCookie("selectedSDForSA"));
+      console.log("siteSettings ===> " , siteSettings);
     } else{
       // console.log("under else");
       // console.log("under if of siteSettings");

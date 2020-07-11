@@ -160,8 +160,8 @@ Template.sociallogin.events({
     'submit #registerform'(event,template){
         event.preventDefault();
         var uname = $("#registerUsername").val();
-            uemail = $("#registerEmail").val();
-            upass = $("#registerPassword").val();
+        var uemail = $("#registerEmail").val();
+        var upass = $("#registerPassword").val();
              const subdomain = Subdomain.findOne({name:getSubdomain()});
             Meteor.call("register",{"email":uemail,"password":upass,"profile":{"name":uname, "subdomainName": getSubdomain(),"subdomainId":subdomain._id}},function(err,res){
                 if (err) {

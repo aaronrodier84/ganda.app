@@ -18,9 +18,9 @@
 	"signinAndSignupModal": {
 		"signInButton": "SIGN IN",
 		"registerNow": "Register Now",
-		"emailIdLable": "Email Id",
+		"emailIdLable": "Email Address",
 		"password": "Password",
-		"userName": "USER NAME",
+		"userName": "Username",
 		"register": "REGISTER"
 	},
 	"feedBackModal": {

@@ -50,7 +50,7 @@ Meteor.methods({
       </p><b>Ganda</b></p>`;
       Email.send({
           to: usersData.email,
-          from: "Ganda <hello@doqumi.com>",
+          from: Meteor.settings.public.adminEmail,
           subject: "Welcome to Ganda",
           html: html
       });

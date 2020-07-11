@@ -49,7 +49,8 @@ Meteor.methods({
 		const checkUpdate = Subdomain.update(subdomainData.subDomainId, {
 			$set:{
 				name: subdomainData.name,
-				title: subdomainData.title,
+        title: subdomainData.title,
+        contactEmail: subdomainData.contactEmail,
 			},
 		});
 		return true
