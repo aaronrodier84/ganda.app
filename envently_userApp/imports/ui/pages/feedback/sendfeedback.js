@@ -2,7 +2,7 @@ import { AdminSettings } from '/imports/api/admin_settings/admin_settings.js';
 import './sendfeedback.html';
 import { dynamicCollections } from '/imports/startup/both/dynamic_collections.js';
 import { getSubdomain, getCookie } from '/imports/startup/both/global_function.js';
-import { Subdomain } from '/import/api/subdomain/subdomain.js';
+import { Subdomain } from '/imports/api/subdomain/subdomain.js';
 
 Template.sendfeedback.onCreated(function() {
     const { ReactiveVar }  =  require('meteor/reactive-var');
