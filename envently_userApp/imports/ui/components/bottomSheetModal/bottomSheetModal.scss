@@ -51,13 +51,14 @@
   }
   .doublebay {
 
-    #subMenuHeading {
+    #subMenuHeading, #destinationHeading {
      text-align: right;
     padding-top: 23px;
     position: fixed;
     right: 10px;
     color: #fff;
     }
+
     #modalContent {
       padding: 0 24px;
     }
@@ -233,9 +234,6 @@
    padding-top:120px;
 }
 
-.bottom-nav{
-  padding-top:0px;
-}
 
 .btm-listing .collection-item {
     background-color: transparent;

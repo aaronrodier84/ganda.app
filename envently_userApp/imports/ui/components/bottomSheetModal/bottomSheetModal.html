@@ -40,6 +40,19 @@
                         </div>
                     </div>
                     {{/if}}
+                    {{#if subCategoryHeader}}
+                    <div class="add-whitespace">
+                        <div class="top-header"
+                             style="background-color: {{ bottomSheetSubMenu.headerBackgroundColor }}">
+                            <div class="side-logo pull-left">
+                                <img class="circle" src="./assets/img/maki-white/{{subCategoryHeader.icon}}.svg" style="background-color:{{subCategoryHeader.color}}" />
+                            </div>
+                            <h5 id="destinationHeading" class="capitalize menuName"
+                                style="color: {{ bottomSheetSubMenu.headingFontColor }}">{{subCategoryHeader.title}}</h5>
+
+                        </div>
+                    </div>
+                    {{/if}}
                     <!-- <div class="add-whitespace"></div> -->
                     <ul class="collection btm-listing {{#unless currentMenu}}bottom-nav{{/unless}}" id="mainUl">
                         {{#if currentMenu}}
@@ -104,6 +117,20 @@
                         {{/if}}
                         {{else}}
                         {{#if markers.length}}
+
+
+                        <!--<div class="add-whitespce">-->
+                            <!--<div style="width: 100%;">-->
+                                <!--<div class="side-icon" style="background-color: #dbdcde; text-align: center;">-->
+                                    <!--<img src="./assets/img/maki-white/{{subCategoryHeader.icon}}.svg"-->
+                                         <!--class="menu-item-img circle"-->
+                                         <!--style="background-color:{{subCategoryHeader.color}} !important;" />-->
+                                <!--</div>-->
+                                <!--<p class="title" style="color: #1c1c1c; padding-left: 120px; line-height: 38px;">-->
+                                    <!--{{subCategoryHeader.title}}</p>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
                         {{#each markers}}
                         <li>
                             <div class="sidenav-popup-content"

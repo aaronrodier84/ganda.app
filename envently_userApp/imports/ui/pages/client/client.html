@@ -20,17 +20,6 @@
 
           {{> fab getMenuItemName}}
           {{#if showMap}}
-          {{#if subCategoryHeader}}
-          <div style="position: absolute; z-index: 1; display: flex; width: 100%; background-color: #fafafa">
-            <div class="side-icon" style="background-color: #dbdcde; text-align: center;">
-              <img src="./assets/img/maki-white/{{subCategoryHeader.icon}}.svg"
-                   class="menu-item-img circle"
-                   style="background-color:{{subCategoryHeader.color}} !important;" />
-            </div>
-            <p class="title" style="color: #1c1c1c; padding-left: 120px; line-height: 38px;">
-              {{subCategoryHeader.title}}</p>
-          </div>
-          {{/if}}
           {{> mapbox}}
           {{/if}}
 

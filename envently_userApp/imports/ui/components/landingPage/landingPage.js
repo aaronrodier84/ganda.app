@@ -26,10 +26,13 @@ Template.landingPage.helpers({
 
     let siteSettings = {};
     if (getSubdomain(getCookie("selectedSDForSA")) && dynamicCollections[getSubdomain(getCookie("selectedSDForSA"))+'_admin_settings']) {
-      siteSettings = dynamicCollections[getSubdomain(getCookie("selectedSDForSA"))+'_admin_settings'].findOne({ subDomain: getCookie("selectedSDForSA") });
-      console.log('dynamic', dynamicCollections[getSubdomain(getCookie("selectedSDForSA"))+'_admin_settings'].find().fetch());
-      console.log('cookie', getCookie("selectedSDForSA"));
-      console.log("siteSettings ===> " , siteSettings);
+      Meteor.call('AdminSettings.fetchBySubdomain', getCookie("selectedSDForSA"), (error, result) => {
+        if (error) {
+          return;
+        }
+        siteSettings = result;
+      });
+      // siteSettings = dynamicCollections[getSubdomain(getCookie("selectedSDForSA"))+'_admin_settings'].findOne({ subDomain: getCookie("selectedSDForSA") });
     } else{
       // console.log("under else");
       // console.log("under if of siteSettings");
@@ -39,8 +42,7 @@ Template.landingPage.helpers({
       // console.log("siteSettings ===> " , siteSettings);
     }
 
-    console.log(":: checkDataLoad ",siteSettings);
-    
+
     return siteSettings
   },
   checkHeadingImage (image) {

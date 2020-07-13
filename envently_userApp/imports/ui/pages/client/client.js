@@ -138,9 +138,7 @@ Template.client.helpers({
   currentClient() {
     return Session.get('currentClient');
   },
-  subCategoryHeader() {
-    return Session.get('subCategoryHeader');
-  },
+
   customCss() {
     
     let branding = {};

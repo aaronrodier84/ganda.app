@@ -374,7 +374,10 @@ Template.bottomSheetModal.helpers({
   isEventTypeMarkers() {
     if (Session.get('eventTypeMarkers'))
       return true
-  }
+  },
+  subCategoryHeader() {
+    return Session.get('subCategoryHeader');
+  },
 });
 
 Template.bottomSheetModal.events({
