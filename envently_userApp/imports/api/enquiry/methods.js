@@ -16,8 +16,6 @@ Meteor.methods({
 	      this.unblock();
 	      Email.send({
 	        to: 'placemaking@woollahra.nsw.gov.au',
-            cc: 'peter.kauter@woollahra.nsw.gov.au ',
-            bcc: 'amit.deligence@gmail.com',
 	        from: Meteor.settings.public.adminEmail,
 	        subject: "Enquiry mail",
 	        html: fields.query + "<br/>Contact name :" + fields.contactName + "<br/>Contact Number : " + fields.tel 

@@ -44,7 +44,6 @@ Meteor.methods({
     check([to, subject, message], [String]);
     Email.send({
       to: to,
-      cc: 'peter.kauter@woollahra.nsw.gov.au ',
       from: Meteor.settings.public.adminEmail,
       subject: subject,
       text: message,
