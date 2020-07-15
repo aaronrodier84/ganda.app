@@ -17,7 +17,7 @@ Meteor.methods({
 	      Email.send({
 	        to: fields.email,
 	        from: Meteor.settings.public.adminEmail,
-	        subject: fields.contactName,
+	        subject: "Ganda inquiry submission: " + fields.contactName,
 	        html: "Contact name: " + fields.contactName + "<br/>Contact Number: " + fields.tel + "<br/>Message: " + fields.query
 	      });
  	      return id;
