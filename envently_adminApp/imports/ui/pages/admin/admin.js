@@ -95,12 +95,12 @@ Template.admin.onCreated(function () {
 
       console.log('Before adminSubdomain', getCookie('adminSubdomain'));
       if (getCookie('adminSubdomain')) {
-        console.log('123');
         self.client.set(getCookie('adminSubdomain'))
+        setCookie("selectedSDForSA", getCookie('adminSubdomain'));
       } else if (Array.isArray(Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName)) {
-        console.log('456');
         self.client.set(Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName[0]);
         setCookie("adminSubdomain", Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName[0], 30);
+        setCookie("selectedSDForSA", Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName[0]);
       } else {
         setCookie("adminSubdomain", getSubdomain());
       }
@@ -115,14 +115,30 @@ Template.admin.onCreated(function () {
       }, 500);
     }
 
-    const menuHandle = Meteor.subscribe('menu_item_dev.all', self.selectedDomain.get());
+    var  menuHandle;
+    if (Array.isArray(Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName)) {
+      menuHandle = Meteor.subscribe('menu_item_dev.all', getCookie('adminSubdomain'));
+    } else {
+      menuHandle = Meteor.subscribe('menu_item_dev.all', self.selectedDomain.get());
+    }
     if (menuHandle.ready()) {
+      console.log('self.selectedDomain.get()', self.selectedDomain.get());
+      console.log('getSubdomain(self.selectedDomain.get())', getSubdomain(self.selectedDomain.get()));
       if (getSubdomain(self.selectedDomain.get()) && dynamicCollections[getSubdomain(self.selectedDomain.get()) + '_menu_item_dev']) {
+        console.log('singleSetting', dynamicCollections[getSubdomain(self.selectedDomain.get()) + '_menu_item_dev']);
         this.menus.set(dynamicCollections[getSubdomain(self.selectedDomain.get()) + '_menu_item_dev'].find({}, {
           sort: {
             customIndex: 1
           }
         }).fetch());
+      } else if (Array.isArray(Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName) && dynamicCollections[getCookie('adminSubdomain') + '_menu_item_dev']) {
+        this.menus.set(dynamicCollections[getCookie('adminSubdomain') + '_menu_item_dev'].find({}, {
+          sort: {
+            customIndex: 1
+          }
+        }).fetch());
+        console.log('cookie', getCookie('adminSubdomain'));
+        console.log('getSubdomain',getSubdomain(getCookie('adminSubdomain')));
       } else {
         this.menus.set(MenuItemDev.find({}, {
           sort: {
@@ -140,11 +156,27 @@ Template.admin.onCreated(function () {
   this.autorun(() => {
     var self = this;
     // this.client.set(Roles.getRolesForUser(Meteor.user()));
-    const eventHandle = Meteor.subscribe('event_dev.all', self.selectedDomain.get());
-    let locationDevHandle = Meteor.subscribe('location_dev.all', self.selectedDomain.get());
+    var  eventHandle;
+    if (Array.isArray(Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName)) {
+      eventHandle = Meteor.subscribe('event_dev.all', getCookie('adminSubdomain'));
+    } else {
+      eventHandle = Meteor.subscribe('event_dev.all', self.selectedDomain.get());
+    }
+
+    var  locationDevHandle;
+    if (Array.isArray(Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName)) {
+      locationDevHandle = Meteor.subscribe('location_dev.all', getCookie('adminSubdomain'));
+    } else {
+      locationDevHandle = Meteor.subscribe('location_dev.all', self.selectedDomain.get());
+    }
+
+    // const eventHandle = Meteor.subscribe('event_dev.all', self.selectedDomain.get());
+    // let locationDevHandle = Meteor.subscribe('location_dev.all', self.selectedDomain.get());
     if (eventHandle.ready()) {
       if (getSubdomain(self.selectedDomain.get()) && dynamicCollections[getSubdomain(self.selectedDomain.get()) + '_event_dev']) {
         this.events.set(dynamicCollections[getSubdomain(self.selectedDomain.get()) + '_event_dev'].find().fetch());
+      } else if (Array.isArray(Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName) && dynamicCollections[getCookie('adminSubdomain') + '_event_dev']) {
+        this.events.set(dynamicCollections[getCookie('adminSubdomain') + '_event_dev'].find().fetch());
       } else {
         this.events.set(EventDev.find().fetch());
       }
@@ -152,15 +184,29 @@ Template.admin.onCreated(function () {
     if (locationDevHandle.ready()) {
       if (getSubdomain(self.selectedDomain.get()) && dynamicCollections[getSubdomain(self.selectedDomain.get()) + '_location_dev']) {
         this.customLocations.set(dynamicCollections[getSubdomain(self.selectedDomain.get()) + '_location_dev'].find().fetch());
+      } else if (Array.isArray(Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName) && dynamicCollections[getCookie('adminSubdomain') + '_location_dev']) {
+        this.events.set(dynamicCollections[getCookie('adminSubdomain') + '_location_dev'].find().fetch());
       } else {
         this.customLocations.set(LocationDev.find().fetch());
       }
     }
-    const adminSettinghandle = Meteor.subscribe('admin_settings.all', self.selectedDomain.get());
+
+    var  adminSettinghandle;
+    if (Array.isArray(Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName)) {
+      adminSettinghandle = Meteor.subscribe('admin_settings.all', getCookie('adminSubdomain'));
+    } else {
+      adminSettinghandle = Meteor.subscribe('admin_settings.all', self.selectedDomain.get());
+    }
+
+    // const adminSettinghandle = Meteor.subscribe('admin_settings.all', self.selectedDomain.get());
     if (adminSettinghandle.ready()) {
       let adminSetting = {};
       if (getSubdomain(self.selectedDomain.get()) && dynamicCollections[getSubdomain(self.selectedDomain.get()) + '_admin_settings']) {
         adminSetting = dynamicCollections[getSubdomain(self.selectedDomain.get()) + '_admin_settings'].findOne({
+          userId: Meteor.userId()
+        });
+      } else if (Array.isArray(Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName) && dynamicCollections[getCookie('adminSubdomain') + '_admin_settings']) {
+        adminSetting = dynamicCollections[getCookie('adminSubdomain') + '_admin_settings'].findOne({
           userId: Meteor.userId()
         });
       } else {
@@ -1252,6 +1298,7 @@ Template.admin.events({
       deleteAllCookies();
     else {
       setCookie("adminSubdomain", adminSubdomain, 30);
+      getCookie('selectedSDForSA', adminSubdomain, 30);
       document.location.reload(true);
     }
   }

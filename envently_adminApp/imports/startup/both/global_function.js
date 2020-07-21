@@ -1,7 +1,11 @@
 
 export function getSubdomain(sd){
   if(Meteor.userId() && Roles.userIsInRole(Meteor.userId(), ['admin'], 'admin'))  {
+    if (sd && sd != 'none') {
+      return sd;
+    } else {
       return Meteor.user().profile.subdomainName;
+    }
   }
   else if(Meteor.userId() && Roles.userIsInRole(Meteor.userId(),['super-admin'], Roles.GLOBAL_GROUP))
   {
