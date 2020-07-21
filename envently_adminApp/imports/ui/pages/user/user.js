@@ -17,7 +17,8 @@ Template.subdomainUsers.onCreated(function () {
 
 Template.subdomainUsers.onRendered(function () {
 	const templateInstance = this;
-	templateInstance.autorun(function () {
+  console.log('templateInstance.selectedSubdomain.get()', templateInstance.selectedSubdomain.get());
+  templateInstance.autorun(function () {
 		$('#editUserModal').modal();
 		$('#addUserModal').modal();
   	$('select').material_select();
@@ -32,11 +33,12 @@ Template.subdomainUsers.onRendered(function () {
 	      stopPropagation: false // Stops event propagation
 	    }
 	  );
-	  if (templateInstance.selectedSubdomain.get()){
+    if (templateInstance.selectedSubdomain.get()){
    		templateInstance.subscribe = Meteor.subscribe('user.bySubdomainId',templateInstance.selectedSubdomain.get());
 
 	   	if (templateInstance.subscribe.ready()) {
 	   		const users = Meteor.users.find({ 'profile.subdomainId': templateInstance.selectedSubdomain.get() }).fetch();
+	   		console.log('users', users);
 	   		templateInstance.selectedSubdomainUsers.set(users);
 	   	}
 	  }
@@ -49,12 +51,14 @@ Template.subdomainUsers.onDestroyed(function () {
 
 Template.subdomainUsers.helpers({
 	subdomainName () {
-		if (getCookie('adminSubdomain') && Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName.length > 1) {
+		if (getCookie('adminSubdomain') && Array.isArray(Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName)) {
       Template.instance().selectedSubdomain.set(Subdomain.findOne({name: getCookie('adminSubdomain')})._id);
+      console.log('adminSubdomain', getCookie('adminSubdomain'));
 			return getCookie('adminSubdomain') + '.ganda.app';
 		} else {
       const subdomain = Subdomain.findOne(this.subdomainId);
       Template.instance().selectedSubdomain.set(this.subdomainId);
+      console.log('adminSubdomain', subdomain.name);
       if (!subdomain) return '';
       return `${subdomain.name}.ganda.app`;
 		}
@@ -239,7 +243,7 @@ Template.subdomainUsers.events({
 		const instance = Template.instance();
 		instance.isPageLoad.set(true);
     let subdomain = Subdomain.findOne(this.subdomainId);
-    if (getCookie('adminSubdomain') && Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName.length > 1) {
+    if (getCookie('adminSubdomain') && Array.isArray(Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName)) {
       subdomain = Subdomain.findOne({name: getCookie('adminSubdomain')});
     }
 

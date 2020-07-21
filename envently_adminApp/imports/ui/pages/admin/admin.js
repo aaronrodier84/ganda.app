@@ -93,15 +93,19 @@ Template.admin.onCreated(function () {
     }
     if (Roles.userIsInRole(Meteor.userId(), ['admin'], 'admin')) {
 
+      console.log('Before adminSubdomain', getCookie('adminSubdomain'));
       if (getCookie('adminSubdomain')) {
+        console.log('123');
         self.client.set(getCookie('adminSubdomain'))
+      } else if (Array.isArray(Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName)) {
+        console.log('456');
+        self.client.set(Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName[0]);
+        setCookie("adminSubdomain", Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName[0], 30);
       } else {
-        if (Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName.length > 1) {
-          self.client.set(Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName[0]);
-        }
+        setCookie("adminSubdomain", getSubdomain());
       }
     }
-
+    console.log('After adminSubdomain', getCookie('adminSubdomain'));
 
     if (this.subscriptionsReady()) {
       this.subDomainList.set(Subdomain.find().fetch());
@@ -467,6 +471,7 @@ Template.admin.helpers({
     return Template.instance().showAdvertisementPage.get() || '';
   },
   showUsersListPage() {
+    console.log()
     if (Template.instance().showUsersListPage.get() && Template.instance().selectedDomain.get()) {
       const subdomain = Subdomain.findOne({name: getCookie('adminSubdomain')});
       if (subdomain)
@@ -488,7 +493,7 @@ Template.admin.helpers({
 
   checkAdminSubdomainList() {
     if (Meteor.users.findOne({_id:Meteor.userId()})) {
-      return Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName.length;
+      return Array.isArray(Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName);
     } else {
       return 0;
     }
