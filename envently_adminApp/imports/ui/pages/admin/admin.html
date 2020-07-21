@@ -36,15 +36,24 @@
             Subdomain
           </a>
         </li>
-      {{ else }}
-        {{# if checkUserAdmin}}
-          <li>
-            <a class="modal-trigger waves-effect" id="usersList">
-              <i class="material-icons">people</i>
-              Users List
-            </a>
-          </li>
-        {{/ if }}
+      {{/ if }}
+      {{# if checkUserAdmin}}
+      {{# if checkAdminSubdomainList}}
+      <li>
+        <select id="subDomainForAdmin">
+          <option value="none">select subdomain</option>
+          {{#each adminSubdomainList}}
+          <option value="{{this}}" {{adminIsSelected @index}}>{{this}}</option>
+          {{/each}}
+        </select>
+      </li>
+      {{/ if }}
+      <li>
+        <a class="modal-trigger waves-effect" id="usersList">
+          <i class="material-icons">people</i>
+          Users List
+        </a>
+      </li>
       {{/ if }}
       <li>
         <a class="waves-effect" id="advertisementTrigger" >

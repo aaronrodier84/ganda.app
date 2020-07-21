@@ -331,6 +331,15 @@ Template.locationsDataTable.helpers({
     }
   },
 
+  getEmail() {
+    console.log('testLocations', this);
+    if (this.email) {
+      return this.email
+    } else {
+      return '';
+    }
+  },
+
   getCategory() {
     if (this.categories && !Array.isArray(this.categories)){
       return this.categories.name || this.categories;

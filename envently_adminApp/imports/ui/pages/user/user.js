@@ -3,6 +3,7 @@ import { Subdomain } from '/imports/api/subdomain/subdomain.js';
 import { ReactiveVar } from 'meteor/reactive-var';
 import './user.html';
 // import './user.css';
+import {getSubdomain, setCookie, getCookie, deleteAllCookies} from '/imports/startup/both/global_function.js';
 
 Template.subdomainUsers.onCreated(function () {
 	this.selectedUsers = new ReactiveVar(null);
@@ -48,10 +49,16 @@ Template.subdomainUsers.onDestroyed(function () {
 
 Template.subdomainUsers.helpers({
 	subdomainName () {
-		const subdomain = Subdomain.findOne(this.subdomainId);
-		Template.instance().selectedSubdomain.set(this.subdomainId);
-		if (!subdomain) return '';
-		return `${subdomain.name}.ganda.app`;
+		if (getCookie('adminSubdomain') && Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName.length > 1) {
+      Template.instance().selectedSubdomain.set(Subdomain.findOne({name: getCookie('adminSubdomain')})._id);
+			return getCookie('adminSubdomain') + '.ganda.app';
+		} else {
+      const subdomain = Subdomain.findOne(this.subdomainId);
+      Template.instance().selectedSubdomain.set(this.subdomainId);
+      if (!subdomain) return '';
+      return `${subdomain.name}.ganda.app`;
+		}
+
 	},
 	users () {
 
@@ -59,6 +66,12 @@ Template.subdomainUsers.helpers({
 		const templateInstance = Template.instance();
 		if (!templateInstance.selectedSubdomain.get()) return {};
 
+    var subdomain = Subdomain.findOne({_id: templateInstance.selectedSubdomain.get()});
+
+    if (Meteor.subscribe('user.all').ready()) {
+      const users = Meteor.users.find({'profile.subdomainName': subdomain.name }).fetch();
+      return users;
+    }
 
 		// console.log("selectedSubdomain ====> " , templateInstance.selectedSubdomain.get());
 		var data = Meteor.users.find({ 'profile.subdomainId': templateInstance.selectedSubdomain.get() }).fetch();
@@ -119,8 +132,13 @@ Template.subdomainUsers.helpers({
 		if (!subdomainId) {
 			return false;
 		}
-		const count = Meteor.users.find({ 'profile.subdomainId': subdomainId }).count();
-		return count > 0 ? true : false;
+    var subdomain = Subdomain.findOne({_id: subdomainId});
+
+    if (Meteor.subscribe('user.all').ready()) {
+      const count = Meteor.users.find({'profile.subdomainName': subdomain.name }).count();
+      return count > 0 ? true : false;
+    }
+
 	},
 	isColor (id) {
 		if (id) {
@@ -220,7 +238,11 @@ Template.subdomainUsers.events({
 		// console.log("going to call userform");
 		const instance = Template.instance();
 		instance.isPageLoad.set(true);
-		const subdomain = Subdomain.findOne(this.subdomainId);
+    let subdomain = Subdomain.findOne(this.subdomainId);
+    if (getCookie('adminSubdomain') && Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName.length > 1) {
+      subdomain = Subdomain.findOne({name: getCookie('adminSubdomain')});
+    }
+
 		const userId = instance.selectedUsers.get();
 		let user = {};
 		let role = '';
@@ -244,8 +266,8 @@ Template.subdomainUsers.events({
 			name: $('#userName').val(),
 			email: $('#userEmail').val(),
 			role: role,
-			subdomainId: this.subdomainId,
-			subdomainName:subdomain.name,
+			subdomainId: subdomain._id,
+			subdomainName: [subdomain.name],
 			hostname: window.location.hostname,
 			port: window.location.port,
 		};

@@ -91,6 +91,17 @@ Template.admin.onCreated(function () {
       // console.log("subdomain is selected");
       this.client.set(getCookie("selectedSDForSA"));
     }
+    if (Roles.userIsInRole(Meteor.userId(), ['admin'], 'admin')) {
+
+      if (getCookie('adminSubdomain')) {
+        self.client.set(getCookie('adminSubdomain'))
+      } else {
+        if (Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName.length > 1) {
+          self.client.set(Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName[0]);
+        }
+      }
+    }
+
 
     if (this.subscriptionsReady()) {
       this.subDomainList.set(Subdomain.find().fetch());
@@ -227,6 +238,7 @@ Template.admin.onRendered(function () {
   }, 500);
   this.autorun(() => {
 
+    let self = this;
     if (this.subscriptionsReady()) {
       Meteor.setTimeout(() => {
         var el = document.getElementById('sortable-list');
@@ -273,12 +285,16 @@ Template.admin.onRendered(function () {
 
       }, 100);//setTimeout
 
+
     }
   });
 });
 Template.admin.helpers({
   checkUserSuperAdmin() {
     return Roles.userIsInRole(Meteor.userId(), ['super-admin'], Roles.GLOBAL_GROUP);
+  },
+  checkAdminOrSuperAdmin() {
+    return Roles.userIsInRole(Meteor.userId(), ['super-admin'], Roles.GLOBAL_GROUP) || Roles.userIsInRole(Meteor.userId(), ['admin'], 'admin');
   },
   checkUserAdmin() {
     return Roles.userIsInRole(Meteor.userId(), ['admin'], 'admin');
@@ -296,6 +312,7 @@ Template.admin.helpers({
 
   },
   menuItems() {
+    console.log('menus', Template.instance().menus.get());
     return Template.instance().menus.get();
   },
   menuEdit() {
@@ -451,7 +468,7 @@ Template.admin.helpers({
   },
   showUsersListPage() {
     if (Template.instance().showUsersListPage.get() && Template.instance().selectedDomain.get()) {
-      const subdomain = Subdomain.findOne({name: Template.instance().selectedDomain.get()});
+      const subdomain = Subdomain.findOne({name: getCookie('adminSubdomain')});
       if (subdomain)
         return subdomain._id;
       return false
@@ -461,6 +478,21 @@ Template.admin.helpers({
   subdomainList() {
     return Template.instance().subDomainList.get() || [];
   },
+  adminSubdomainList() {
+    if (Meteor.users.findOne({_id:Meteor.userId()})) {
+      return Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName;
+    } else {
+      return false;
+    }
+  },
+
+  checkAdminSubdomainList() {
+    if (Meteor.users.findOne({_id:Meteor.userId()})) {
+      return Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName.length;
+    } else {
+      return 0;
+    }
+  },
   selectedDomain() {
     return {selectedDomain: Template.instance().selectedDomain.get() || ''};
   },
@@ -468,6 +500,17 @@ Template.admin.helpers({
     if (getCookie("selectedSDForSA") == this.name)
       return 'selected';
     else return '';
+  },
+  adminIsSelected(index) {
+    if (getCookie('adminSubdomain')) {
+      if (Meteor.users.findOne({_id:Meteor.userId()}).profile.subdomainName[index] === getCookie('adminSubdomain')) {
+        return 'selected'
+      }
+    } else if (index == 0) {
+      return 'selected';
+    } else {
+      return '';
+    }
   },
 
 
@@ -1176,8 +1219,8 @@ Template.admin.events({
 
   "change #subDomainForSuperAdmin"(event, inst) {
     var selectedSDForSA = $(event.currentTarget).val();
-    inst.selectedDomain.set(selectedSDForSA)
-    // console.log('selectedSDForSA ',selectedSDForSA)
+
+    inst.selectedDomain.set(selectedSDForSA);
     if (selectedSDForSA == 'none')
       deleteAllCookies();
     else {
@@ -1194,6 +1237,17 @@ Template.admin.events({
       document.location.reload(true);
 
       //Meteor._reload.reload();
+    }
+  },
+
+  "change #subDomainForAdmin"(event, inst) {
+    var adminSubdomain = $(event.currentTarget).val();
+    inst.selectedDomain.set(adminSubdomain);
+    if (adminSubdomain == 'none')
+      deleteAllCookies();
+    else {
+      setCookie("adminSubdomain", adminSubdomain, 30);
+      document.location.reload(true);
     }
   }
 });
