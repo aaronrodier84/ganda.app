@@ -32,7 +32,12 @@
                 <input name="locationWebsite" title="Must be a valid URL" id="editlocationWebsite" class="location-form-field" type="text" placeholder="Valid Website Adress" pattern="https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,}" autocomplete="off" value={{getWebsite}} />
               </div>
 
-              <div class="col s12">
+              <div class="col s12 m6">
+                <label class="label-icon" for="editEmail">Email</label>
+                <input name="email" id="editEmail" class="location-form-field" type="text" placeholder="Email" autocomplete="off" value={{getEmail}} required>
+              </div>
+
+              <div class="col s12 m6">
                 <label class="label-icon" for="editcategories">Categories</label>
                 <input name="categories" id="editcategories" class="location-form-field" type="text" placeholder="Categories" autocomplete="off" value={{getCategory}} required>
               </div>

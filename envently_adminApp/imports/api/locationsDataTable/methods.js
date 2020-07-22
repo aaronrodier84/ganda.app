@@ -174,6 +174,7 @@ Meteor.methods({
                 { $set: {
                   name : location.newFields.name,
                   address : location.newFields.address,
+                  email : location.newFields.email,
                   phone : location.newFields.phone,
                   website : location.newFields.website,
                   categories : location.newFields.categories,
@@ -185,6 +186,7 @@ Meteor.methods({
                 { $set: {
                   name : location.newFields.name,
                   address : location.newFields.address,
+                  email : location.newFields.email,
                   phone : location.newFields.phone,
                   website : location.newFields.website,
                   categories : location.newFields.categories,
@@ -213,6 +215,7 @@ Meteor.methods({
                 { $set: {
                   name : location.newFields.name,
                   address : location.newFields.address,
+                  email : location.newFields.email,
                   phone : location.newFields.phone,
                   website : location.newFields.website,
                   categories : location.newFields.categories,
@@ -224,6 +227,7 @@ Meteor.methods({
                 { $set: {
                   name : location.newFields.name,
                   address : location.newFields.address,
+                  email : location.newFields.email,
                   phone : location.newFields.phone,
                   website : location.newFields.website,
                   categories : location.newFields.categories,
@@ -258,6 +262,7 @@ Meteor.methods({
         return  dynamicCollections[getSubdomain(sd)+'_location_dev'].insert({
           name : location.newFields.name,
           address : location.newFields.address,
+          email : location.newFields.email,
           phone : location.newFields.phone,
           website : location.newFields.website,
           categories : location.newFields.categories,
@@ -271,6 +276,7 @@ Meteor.methods({
         locationDataStatus = LocationDev.insert({
           name : location.newFields.name,
           address : location.newFields.address,
+          email : location.newFields.email,
           phone : location.newFields.phone,
           website : location.newFields.website,
           categories : location.newFields.categories,

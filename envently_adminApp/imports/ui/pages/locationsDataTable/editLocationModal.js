@@ -70,6 +70,14 @@ Template.editLocationModal.helpers({
     }
   },
 
+  getEmail() {
+	  if (this.email) {
+	    return this.email;
+    } else {
+	    return '';
+    }
+  },
+
   getWebsite() {
     if (this.website){
       return this.website;
@@ -145,6 +153,7 @@ Template.editLocationModal.events({
       name: event.currentTarget.editLocationName.value,
       address: event.currentTarget.editlocationAddress.value,
       phone: event.currentTarget.editlocationPhone.value,
+      email: event.currentTarget.editEmail.value,
       website: event.currentTarget.editlocationWebsite.value,
       categories: event.currentTarget.editcategories.value,
     };
